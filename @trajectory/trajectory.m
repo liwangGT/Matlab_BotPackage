@@ -25,12 +25,30 @@ end
 
 properties (GetAccess = public, SetAccess = private, Hidden = true)
     timeVec = nan(1,0) % (1 x ? number) Trajectory time vector.
-    stateVec = repmat(bot.State(nan),1,0) % (1 x ? state) Trajectory state vector.
+    posVec = nan(3,0) % (3 x ? number) Trajectory position vector (x,y,z)
+    oriVec = nan(4,0) % (4 x ? number) Trajectory orientation vector (quaternions)
+    velVec = nan(3,0) % (3 x ? number) Trajectory velocity vector (vx,vy,vz)
+    angVec = nan(3,0) % (3 x ? number) Trajectory angular velocity vector (wx,wy,wz)
 end
 
 properties (Dependent = true, SetAccess = private)
     times % (1 x length number) Trajectory times.
-    states % (1 x length state) Trajectory states.
+    positions % (3 x length number) Trajectory positions.
+    orientations % (4 x length number) Trajectory orientations.
+    velocities % (3 x length number) Trajectory velocities.
+    angularVelocities  % (3 x length number) Trajectory velocities.
+    x
+    y
+    z
+    roll
+    pitch
+    yaw
+    vx
+    vy
+    vz
+    wx
+    wy
+    wz
 end
 
 properties (Dependent = true, SetAccess = private, Hidden = true)
@@ -79,26 +97,6 @@ methods
 end
 %-------------------------------------------------------------------------------
 
-%% Destructor ------------------------------------------------------------------
-% methods (Access = public)
-%     function delete(trajectoryObj)
-%         % Destructor function for the "trajectoryObj" class.
-%         %
-%         % SYNTAX:
-%         %   delete(trajectoryObj)
-%         %
-%         % INPUTS:
-%         %   trajectoryObj - (1 x 1 bot.Trajectory)
-%         %       An instance of the "bot.Trajectory" class.
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-%         
-%     end
-% end
-%-------------------------------------------------------------------------------
-
 %% Property Methods ------------------------------------------------------------
 methods
 %     function trajectoryObj = set.prop1(trajectoryObj,prop1)
@@ -109,16 +107,28 @@ methods
 %         trajectoryObj.prop1 = prop1;
 %     end
 
+    function lengthVec = get.lengthVec(trajectoryObj)
+        lengthVec = numel(trajectoryObj.timeVec);
+    end
+
     function times = get.times(trajectoryObj)
         times = trajectoryObj.timeVec(:,1:trajectoryObj.length);
     end
     
-    function states = get.states(trajectoryObj)
-        states = trajectoryObj.stateVec(:,1:trajectoryObj.length);
+    function positions = get.positions(trajectoryObj)
+        positions = trajectoryObj.posVec(:,1:trajectoryObj.length);
     end
     
-    function lengthVec = get.lengthVec(trajectoryObj)
-        lengthVec = numel(trajectoryObj.timeVec);
+    function x = get.x(trajectoryObj)
+        x = trajectoryObj.posVec(1,1:trajectoryObj.length);
+    end
+    
+    function y = get.y(trajectoryObj)
+        y = trajectoryObj.posVec(2,1:trajectoryObj.length);
+    end
+    
+    function z = get.z(trajectoryObj)
+        z = trajectoryObj.posVec(3,1:trajectoryObj.length);
     end
 end
 %-------------------------------------------------------------------------------
@@ -167,7 +177,11 @@ methods (Access = public)
         end
         l = trajectoryObj.length;
         trajectoryObj.timeVec(:,l+1:l+n) = times;
-        trajectoryObj.stateVec(:,l+1:l+n) = states;
+        trajectoryObj.posVec(:,l+1:l+n) = [states.position];
+        trajectoryObj.oriVec(:,l+1:l+n) = cell2mat(arrayfun(@(s) s.orientation.quat,states,'UniformOutput',0));
+        trajectoryObj.velVec(:,l+1:l+n) = [states.velocity];
+        trajectoryObj.angVec(:,l+1:l+n) = [states.angularVelocity];
+        
         trajectoryObj.length = l + n;
     end
 end
@@ -203,7 +217,10 @@ methods (Access = public, Hidden = true)
             'Input argument "l" must be a 1 x 1 positive integer.')
         
         trajectoryObj.timeVec = [trajectoryObj.timeVec nan(1,l)];
-        trajectoryObj.stateVec = [trajectoryObj.stateVec repmat(bot.State(nan),1,l)];
+        trajectoryObj.posVec = [trajectoryObj.posVec nan(3,l)];
+        trajectoryObj.oriVec = [trajectoryObj.oriVec nan(4,l)];
+        trajectoryObj.velVec = [trajectoryObj.velVec nan(3,l)];
+        trajectoryObj.angVec = [trajectoryObj.angVec nan(3,l)];
     end
     
 end
