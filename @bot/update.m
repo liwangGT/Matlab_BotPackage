@@ -29,9 +29,10 @@ if botObj.record
 end
 
 %% Update
+botObj.input = botObj.controller();
 if botObj.simulate
-    time = botObj.timeRaw + botObj.timeStep;
     state = botObj.step();
+    time = botObj.timeRaw + botObj.timeStep;
 else
     time = botObj.clock();
     pause(botObj.timeStep);

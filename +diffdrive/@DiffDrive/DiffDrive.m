@@ -60,10 +60,6 @@ methods
         diffdriveObj = diffdriveObj@bot.Bot(nInputs,nOutputs);
         
         % Assign properties
-        d = .1;
-        Q = diag([10 10]);
-        R = diag([1 10]);
-        diffdriveObj.controller = bot.diffdrive.controller.DiffMorphic(d,Q,R);
     end
 end
 %-------------------------------------------------------------------------------
@@ -125,9 +121,11 @@ end
 
 %% Methods in separte files ----------------------------------------------------
 methods (Access = public)
-    state = step(diffdriveObj,timeStep,time,state,input)
     motorValues = linAngVel2motorValues(diffdriveObj,linVel,angVel)
     [linVel,angVel] = motorValues2linAngVel(diffdriveObj,motorValues)
+    
+    state = step(diffdriveObj,timeStep,time,state,input)
+    input = controller(diffdriveObj,time,state,desiredState)
 end
 %-------------------------------------------------------------------------------
     

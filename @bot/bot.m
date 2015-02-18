@@ -20,6 +20,7 @@ classdef Bot < handle
 
 %% Properties ------------------------------------------------------------------
 properties (Access = public)
+    name = '' % (string) Name of bot.
     state % (1 x 1 bot.State) Current state.
     input % (nInputs x 1 number) Current input.
     output % (nOutputs x 1 number) Current ouput.
@@ -27,10 +28,6 @@ properties (Access = public)
     timeStep % (1 x 1 positive number) Time step duration.
     simulate = true; % (1 x 1 logical) If true simulation is run.
     record = false % (1 x 1 logical) If true tape recorder is on.
-end
-
-properties (Access = public)
-    controller % (1 x 1 bot.Controller)
 end
 
 properties (Access = protected)
@@ -50,6 +47,12 @@ properties (GetAccess = public, SetAccess = private)
     nInputs % (1 x 1 positive integer) Number of inputs to the system.
     nOutputs % (1 x 1 positive integer) Number of outputs to the system.
     tape % (1 x 1 trajectory) Tape recording of past time and poses.
+end
+
+properties (Access = public, Hidden = true)
+    figHandle = [] % (1 x 1 graphics object) Figure handle for plot
+    axisHandle = [] % (1 x 1 graphics object) Axis handle for plot
+    graphicsHandles = [] % (? x 1 graphics objects) Graphics handles for plot
 end
 
 %% Constructor -----------------------------------------------------------------
@@ -104,7 +107,6 @@ methods
         botObj.state = bot.State;
         botObj.desiredState = bot.State;
         botObj.tape = bot.Trajectory;
-        botObj.controller = bot.Controller;
     end
 end
 %-------------------------------------------------------------------------------
@@ -159,6 +161,7 @@ end
 methods (Access = public)
     update(botObj,timeRaw,positionRaw,orientationRaw)
     state = step(botObj,timeStep,time,state,input)
+    input = controller(botObj,time,state,desiredState)
 end
 %-------------------------------------------------------------------------------
     
