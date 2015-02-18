@@ -1,8 +1,8 @@
-classdef trajectory < handle
-% The "bot.trajectory" class is used to store trajectories.
+classdef Trajectory < handle
+% The "bot.Trajectory" class is used to store trajectories.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.trajectory" into the
+%   To get more information on this class type "doc bot.Trajectory" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
@@ -25,7 +25,7 @@ end
 
 properties (GetAccess = public, SetAccess = private, Hidden = true)
     timeVec = nan(1,0) % (1 x ? number) Trajectory time vector.
-    stateVec = repmat(bot.state(nan),1,0) % (1 x ? state) Trajectory state vector.
+    stateVec = repmat(bot.State(nan),1,0) % (1 x ? state) Trajectory state vector.
 end
 
 properties (Dependent = true, SetAccess = private)
@@ -43,19 +43,19 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function trajectoryObj = trajectory(initLength)
-        % Constructor function for the "trajectory" class.
+    function trajectoryObj = Trajectory(initLength)
+        % Constructor function for the "Trajectory" class.
         %
         % SYNTAX:
-        %   trajectoryObj = bot.trajectory(initLength)
+        %   trajectoryObj = bot.Trajectory(initLength)
         %
         % INPUTS:
         %   initLength - (1 x 1 positive integer) [vecCatSize] 
         %       Initializes length of trajectory
         %
         % OUTPUTS:
-        %   trajectoryObj - (1 x 1 bot.trajectory object) 
-        %       A new instance of the "bot.trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.Trajectory object) 
+        %       A new instance of the "bot.Trajectory" class.
         %
         % NOTES:
         %
@@ -70,7 +70,7 @@ methods
         % Check input arguments for errors
         assert(isnumeric(initLength) && isreal(initLength) && numel(initLength) == 1 && ...
             mod(initLength,1) == 0 && initLength > 0,...
-            'bot:trajectory:initLength',...
+            'bot:Trajectory:initLength',...
             'Input argument "initLength" must be a 1 x 1 positive integer.')
         
         % Initialize
@@ -88,8 +88,8 @@ end
 %         %   delete(trajectoryObj)
 %         %
 %         % INPUTS:
-%         %   trajectoryObj - (1 x 1 bot.trajectory)
-%         %       An instance of the "bot.trajectory" class.
+%         %   trajectoryObj - (1 x 1 bot.Trajectory)
+%         %       An instance of the "bot.Trajectory" class.
 %         %
 %         % NOTES:
 %         %
@@ -103,7 +103,7 @@ end
 methods
 %     function trajectoryObj = set.prop1(trajectoryObj,prop1)
 %         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'bot:trajectory:set:prop1',...
+%             'bot:Trajectory:set:prop1',...
 %             'Property "prop1" must be set to a 1 x 1 real number.')
 % 
 %         trajectoryObj.prop1 = prop1;
@@ -133,8 +133,8 @@ methods (Access = public)
         %   trajectoryObj = trajectoryObj.append(trajectoryObj,times,states)
         %
         % INPUTS:
-        %   trajectoryObj - (1 x 1 bot.trajectory)
-        %       An instance of the "bot.trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.Trajectory)
+        %       An instance of the "bot.Trajectory" class.
         %
         %   times - (1 x ? number)
         %       New time data.
@@ -151,14 +151,14 @@ methods (Access = public)
 
         % Check arguments for errors
         assert(isnumeric(times) && isreal(times) && isvector(times),...
-            'bot:trajectory:append:time',...
+            'bot:Trajectory:append:time',...
             'Input argument "time" must be a vector of real numbers.')
         times = times(:)';
         n = numel(times);
         
         if nargin < 3, states = repmat(bot.state(nan),1,n); end
-        assert(isa(states,'bot.state') && isvector(states) && numel(states) == n,...
-            'bot:trajectory:append:state',...
+        assert(isa(states,'bot.State') && isvector(states) && numel(states) == n,...
+            'bot:Trajectory:append:state',...
             'Input argument "state" must be a 1 x %d vector of states.',n)
         states = states(:)';
         
@@ -181,8 +181,8 @@ methods (Access = public, Hidden = true)
         %   trajectoryObj = trajectoryObj.increaseLength(l)
         %
         % INPUTS:
-        %   trajectoryObj - (1 x 1 bot.trajectory)
-        %       An instance of the "bot.trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.Trajectory)
+        %       An instance of the "bot.Trajectory" class.
         %
         %   l - (1 x 1 positive number) [trajectoryObj.catSize]
         %       Length to increase vectors by. 
@@ -199,11 +199,11 @@ methods (Access = public, Hidden = true)
         
         % Check arguments for errors
         assert(isnumeric(l) && isreal(l) && numel(l) == 1 && mod(l,1) == 0 && l > 0,...
-            'bot:trajectory:increaseLength:l',...
+            'bot:Trajectory:increaseLength:l',...
             'Input argument "l" must be a 1 x 1 positive integer.')
         
         trajectoryObj.timeVec = [trajectoryObj.timeVec nan(1,l)];
-        trajectoryObj.stateVec = [trajectoryObj.stateVec repmat(bot.state(nan),1,l)];
+        trajectoryObj.stateVec = [trajectoryObj.stateVec repmat(bot.State(nan),1,l)];
     end
     
 end

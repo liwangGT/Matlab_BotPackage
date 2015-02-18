@@ -10,8 +10,8 @@ function state = step(diffdriveObj,timeStep,~,state,input)
 %   
 %
 % INPUTS:
-%   diffdriveObj - (1 x 1 bot.bot)
-%       An instance of the "bot.bot" class.
+%   diffdriveObj - (1 x 1 bot.DiffDrive)
+%       An instance of the "bot.DiffDrive" class.
 %
 %   timeStep - (1 x 1 number) [diffdriveObj.timeStep] 
 %       Time step duration.

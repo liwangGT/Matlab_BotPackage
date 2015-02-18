@@ -1,12 +1,12 @@
-classdef bot < handle
-% The "bot.bot" class is used for mobile robots.
+classdef Bot < handle
+% The "Bot.Bot" class is used for mobile robots.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.bot" into the
+%   To get more information on this class type "doc Bot.Bot" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   +bot, quaternion.m
+%   +Bot, quaternion.m
 %
 % SEE ALSO: TODO: Add see alsos
 %    relatedFunction1 | relatedFunction2
@@ -20,16 +20,17 @@ classdef bot < handle
 
 %% Properties ------------------------------------------------------------------
 properties (Access = public)
-    state % (1 x 1 state) Current state.
+    state % (1 x 1 bot.State) Current state.
     input % (nInputs x 1 number) Current input.
     output % (nOutputs x 1 number) Current ouput.
+    desiredState % (1 x 1 bot.State) Desired state.
     timeStep % (1 x 1 positive number) Time step duration.
     simulate = true; % (1 x 1 logical) If true simulation is run.
     record = false % (1 x 1 logical) If true tape recorder is on.
 end
 
 properties (Access = public)
-    controller % (1 x 1 function pointer) input = controller(obj,setpoint)
+    controller % (1 x 1 bot.Controller)
 end
 
 properties (Access = protected)
@@ -53,13 +54,13 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function botObj = bot(nInputs,nOutputs)
-        % Constructor function for the "bot" class.
+    function botObj = Bot(nInputs,nOutputs)
+        % Constructor function for the "Bot" class.
         %
         % SYNTAX:
-        %   botObj = bot()
-        %   botObj = bot(nInputs)
-        %   botObj = bot(nInputs,nOutputs)
+        %   botObj = Bot()
+        %   botObj = Bot(nInputs)
+        %   botObj = Bot(nInputs,nOutputs)
         %
         % INPUTS:
         %   nInputs = (1 x 1 positive integer) [0]
@@ -69,8 +70,8 @@ methods
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
-        %   botObj - (1 x 1 bot object) 
-        %       A new instance of the "bot.bot" class.
+        %   botObj - (1 x 1 Bot object) 
+        %       A new instance of the "Bot.Bot" class.
         %
         % NOTES:
         %
@@ -86,13 +87,13 @@ methods
         % Check input arguments for errors
         assert(isnumeric(nInputs) && isreal(nInputs) && numel(nInputs) == 1 && ...
                mod(nInputs,1) == 0 && nInputs >= 0,...
-            'bot:bot:nInputs',...
-            'Input argument "nInputs" must be a string.')
+            'Bot:Bot:nInputs',...
+            'Input argument "nInputs" must be a 1 x 1 positive integer.')
         
         assert(isnumeric(nOutputs) && isreal(nOutputs) && numel(nOutputs) == 1 && ...
                mod(nOutputs,1) == 0 && nOutputs >= 0,...
-            'bot:bot:nOutputs',...
-            'Input argument "nOutputs" must be a string.')
+            'Bot:Bot:nOutputs',...
+            'Input argument "nOutputs" must be a 1 x 1 positive integer.')
         
         % Assign properties
         botObj.nInputs = nInputs;
@@ -100,9 +101,10 @@ methods
         botObj.ticID = tic;
         botObj.timeStep = .1;
         botObj.time = 0;
-        botObj.state = bot.state;
-        botObj.tape = bot.trajectory;
-        botObj.controller = @botObj.controllerZero;
+        botObj.state = bot.State;
+        botObj.desiredState = bot.State;
+        botObj.tape = bot.Trajectory;
+        botObj.controller = bot.Controller;
     end
 end
 %-------------------------------------------------------------------------------
@@ -111,7 +113,7 @@ end
 methods
     function set.time(botObj,time) 
         assert(isnumeric(time) && isreal(time) && numel(time) == 1,...
-            'bot:bot:set:time',...
+            'Bot:Bot:set:time',...
             'Property "time" must be set to a 1 x 1 real number.')
         
         if isnan(botObj.timeRaw)
@@ -124,14 +126,6 @@ methods
     function time = get.time(botObj)
         time = botObj.timeRaw - botObj.timeOffset;
     end
-    
-%     function state = get.state(botObj)
-%         pos = botObj.stateRaw.position - botObj.stateOffset.position;
-%         ori = botObj.stateRaw.orientation * botObj.stateOffset.orientation';
-%         vel = botObj.stateRaw.velocity;
-%         angVel = botObj.stateRaw.angularVelocity;
-%         state = bot.state(pos,ori,vel,angVel);
-%     end
 
 end
 %-------------------------------------------------------------------------------
@@ -145,8 +139,8 @@ methods (Access = public)
         %   time = botObj.clock()
         %
         % INPUTS:
-        %   botObj - (1 x 1 bot.bot)
-        %       An instance of the "bot.bot" class.
+        %   botObj - (1 x 1 Bot.Bot)
+        %       An instance of the "Bot.Bot" class.
         %
         % OUTPUTS:
         %   time - (1 x 1 number)
@@ -157,29 +151,7 @@ methods (Access = public)
         %-----------------------------------------------------------------------
         
         time = toc(botObj.ticID);
-    end
-    
-    function input = controllerZero(botObj,~)
-        % The "controllerZero" method is a controller that always returns
-        % zero input.
-        %
-        % SYNTAX:
-        %   input = controllerZero(botObj,setpoint)
-        %
-        % INPUTS:
-        %   botObj - (1 x 1 bot.bot)
-        %       An instance of the "bot.bot" class.
-        %
-        % OUTPUTS:
-        %   input - (nInputs x 1 number)
-        %       Current input.
-        %
-        % NOTES:
-        %
-        %-----------------------------------------------------------------------
-        input = zeros(botObj.nInputs,1);
-    end
-    
+    end   
 end
 %-------------------------------------------------------------------------------
 

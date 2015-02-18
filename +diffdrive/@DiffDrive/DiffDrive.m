@@ -1,15 +1,15 @@
-classdef diffdrive < bot.bot
-% The "bot.diffdrive" classis for differential drive robots.
+classdef DiffDrive < bot.Bot
+% The "bot.DiffDrive" classis for differential drive robots.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.diffdrive" into the
+%   To get more information on this class type "doc bot.DiffDrive" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
 %   +bot
 %
 % SEE ALSO: TODO: Add see alsos
-%    bot.bot | relatedFunction2
+%    bot.Bot | relatedFunction2
 %
 % AUTHOR:
 %    Rowland O'Flaherty (www.rowlandoflaherty.com)
@@ -31,19 +31,19 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function diffdriveObj = diffdrive(nOutputs)
-        % Constructor function for the "diffdrive" class.
+    function diffdriveObj = DiffDrive(nOutputs)
+        % Constructor function for the "DiffDrive" class.
         %
         % SYNTAX:
-        %   diffdriveObj = bot.diffdrive(nOutputs)
+        %   diffdriveObj = bot.DiffDrive(nOutputs)
         %
         % INPUTS:
         %   nOutputs = (1 x 1 positive integer) [0]
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
-        %   diffdriveObj - (1 x 1 trackable.diffdrive object) 
-        %       A new instance of the "trackable.diffdrive" class.
+        %   diffdriveObj - (1 x 1 bot.DiffDrive object) 
+        %       A new instance of the "bot.DiffDrive" class.
         %
         % NOTES:
         %
@@ -57,14 +57,13 @@ methods
         
         % Initialize superclass
         nInputs = 2;
-        diffdriveObj = diffdriveObj@bot.bot(nInputs,nOutputs);
+        diffdriveObj = diffdriveObj@bot.Bot(nInputs,nOutputs);
         
         % Assign properties
-        % diffdriveObj.time = 0;
-        % diffdriveObj.position = [0 0 0]';
-        % diffdriveObj.orientation = quaternion([0;0;1],0);
-        % diffdriveObj.controlMethod = @diffdriveObj.diffMorphic;
-        % diffdriveObj.tapeFlag = true;
+        d = .1;
+        Q = diag([10 10]);
+        R = diag([1 10]);
+        diffdriveObj.controller = bot.diffdrive.controller.DiffMorphic(d,Q,R);
     end
 end
 %-------------------------------------------------------------------------------
@@ -73,7 +72,7 @@ end
 % methods
 %     function diffdriveObj = set.prop1(diffdriveObj,prop1)
 %         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'bot:diffdrive:set:prop1',...
+%             'bot:DiffDrive:set:prop1',...
 %             'Property "prop1" must be set to a 1 x 1 real number.')
 % 
 %         diffdriveObj.prop1 = prop1;
@@ -94,15 +93,15 @@ end
 %         %   diffdriveObj = diffdriveObj.method_name(arg1)
 %         %
 %         % INPUTS:
-%         %   diffdriveObj - (1 x 1 bot.diffdrive)
-%         %       An instance of the "bot.diffdrive" class.
+%         %   diffdriveObj - (1 x 1 bot.DiffDrive)
+%         %       An instance of the "bot.DiffDrive" class.
 %         %
 %         %   arg1 - (size type) [defaultArgumentValue] 
 %         %       Description.
 %         %
 %         % OUTPUTS:
-%         %   diffdriveObj - (1 x 1 bot.diffdrive)
-%         %       An instance of the "bot.diffdrive" class ... 
+%         %   diffdriveObj - (1 x 1 bot.DiffDrive)
+%         %       An instance of the "bot.DiffDrive" class ... 
 %         %
 %         % NOTES:
 %         %
@@ -116,7 +115,7 @@ end
 %         
 %         % Check arguments for errors
 %         assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[?,?]),...
-%             'bot:diffdrive:method_name:arg1',...
+%             'bot:DiffDrive:method_name:arg1',...
 %             'Input argument "arg1" must be a ? x ? matrix of real numbers.')
 %         
 %     end

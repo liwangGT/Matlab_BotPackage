@@ -1,15 +1,15 @@
-classdef state
-% The "bot.state" class is used to represent the state of a mobile robot.
+classdef State
+% The "bot.State" class is used to represent the state of a mobile robot.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.state" into the
+%   To get more information on this class type "doc bot.State" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
 %   @quaternion
 %
 % SEE ALSO:
-%    bot.bot | bot.trajectory
+%    bot.Bot | bot.trajectory
 %
 % AUTHOR:
 %    Rowland O'Flaherty (www.rowlandoflaherty.com)
@@ -48,11 +48,11 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function stateObj = state(pos,ori,vel,angVel)
-        % Constructor function for the "state" class.
+    function stateObj = State(pos,ori,vel,angVel)
+        % Constructor function for the "State" class.
         %
         % SYNTAX:
-        %   stateObj = bot.state(pos,ori,vel,angVel)
+        %   stateObj = bot.State(pos,ori,vel,angVel)
         %
         % INPUTS:
         %   pos - (3 x 1 number) [zeros(3,1)]
@@ -68,8 +68,8 @@ methods
         %       Sets the "stateObj.angularVelocity" property.
         %
         % OUTPUTS:
-        %   stateObj - (1 x 1 bot.state object) 
-        %       A new instance of the "bot.state" class.
+        %   stateObj - (1 x 1 bot.State object) 
+        %       A new instance of the "bot.State" class.
         %
         % NOTES:
         %
@@ -86,16 +86,16 @@ methods
         
         % Check input arguments for errors       
         assert(isa(ori,'quaternion') && numel(ori) == 1,...
-            'bot:state:ori',...
+            'bot:State:ori',...
             'Input argument "ori" must be a 1 x 1 quaternion.')
         
         assert(isnumeric(vel) && isreal(vel) && numel(vel) == 3,...
-            'bot:state:vel',...
+            'bot:State:vel',...
             'Input argument "vel" must be a 3 x 1 real number.')
         vel = vel(:);
         
         assert(isnumeric(angVel) && isreal(angVel) && numel(angVel) == 3,...
-            'bot:state:angVel',...
+            'bot:State:angVel',...
             'Input argument "angVel" must be a 3 x 1 real number.')
         angVel = angVel(:);
         
@@ -115,7 +115,7 @@ end
 methods
     function stateObj = set.position(stateObj,position)
         assert(isnumeric(position) && isreal(position) && numel(position) == 3,...
-            'bot:state:set:position',...
+            'bot:State:set:position',...
             'Property "position" must be set to a 3 x 1 real number.')
         
         stateObj.position = position(:);
@@ -123,7 +123,7 @@ methods
     
     function stateObj = set.orientation(stateObj,orientation)
         assert(isa(orientation,'quaternion') && numel(orientation) == 1,...
-            'bot:state:set:orientation',...
+            'bot:State:set:orientation',...
             'Property "orientation" must be set to a 1 x 1 quaternion.')
         
         stateObj.orientation = orientation;
@@ -131,7 +131,7 @@ methods
     
     function stateObj = set.velocity(stateObj,velocity)
         assert(isnumeric(velocity) && isreal(velocity) && numel(velocity) == 3,...
-            'bot:state:set:velocity',...
+            'bot:State:set:velocity',...
             'Property "velocity" must be set to a 3 x 1 real number.')
         
         stateObj.velocity = velocity(:);
@@ -139,7 +139,7 @@ methods
     
     function stateObj = set.angularVelocity(stateObj,angularVelocity)
         assert(isnumeric(angularVelocity) && isreal(angularVelocity) && numel(angularVelocity) == 3,...
-            'bot:state:set:angularVelocity',...
+            'bot:State:set:angularVelocity',...
             'Property "angularVelocity" must be set to a 3 x 1 real number.')
         
         stateObj.angularVelocity = angularVelocity(:);
@@ -147,7 +147,7 @@ methods
     
     function stateObj = set.x(stateObj,x)
         assert(isnumeric(x) && isreal(x) && numel(x) == 1,...
-            'bot:state:set:x',...
+            'bot:State:set:x',...
             'Property "x" must be set to a 1 x 1 real number.')
         stateObj.position(1) = x;
     end
@@ -158,7 +158,7 @@ methods
     
     function stateObj = set.y(stateObj,y)
         assert(isnumeric(y) && isreal(y) && numel(y) == 1,...
-            'bot:state:set:x',...
+            'bot:State:set:x',...
             'Property "y" must be set to a 1 x 1 real number.')
         stateObj.position(2) = y;
     end
@@ -169,7 +169,7 @@ methods
     
     function stateObj = set.z(stateObj,z)
         assert(isnumeric(z) && isreal(z) && numel(z) == 1,...
-            'bot:state:set:x',...
+            'bot:State:set:x',...
             'Property "z" must be set to a 1 x 1 real number.')
         stateObj.position(3) = z;
     end
@@ -180,7 +180,7 @@ methods
     
     function stateObj = set.roll(stateObj,roll)
         assert(isnumeric(roll) && isreal(roll) && numel(roll) == 1,...
-            'bot:state:set:roll',...
+            'bot:State:set:roll',...
             'Property "roll" must be set to a 1 x 1 real number.')
         stateObj.orientation.roll = roll;
     end
@@ -191,7 +191,7 @@ methods
     
     function stateObj = set.pitch(stateObj,pitch)
         assert(isnumeric(pitch) && isreal(pitch) && numel(pitch) == 1,...
-            'bot:state:set:pitch',...
+            'bot:State:set:pitch',...
             'Property "pitch" must be set to a 1 x 1 real number.')
         stateObj.orientation.pitch = pitch;
     end
@@ -202,7 +202,7 @@ methods
     
     function stateObj = set.yaw(stateObj,yaw)
         assert(isnumeric(yaw) && isreal(yaw) && numel(yaw) == 1,...
-            'bot:state:set:yaw',...
+            'bot:State:set:yaw',...
             'Property "yaw" must be set to a 1 x 1 real number.')
         stateObj.orientation.yaw = yaw;
     end
@@ -213,7 +213,7 @@ methods
     
     function stateObj = set.vx(stateObj,vx)
         assert(isnumeric(vx) && isreal(vx) && numel(vx) == 1,...
-            'bot:state:set:vx',...
+            'bot:State:set:vx',...
             'Property "vx" must be set to a 1 x 1 real number.')
         stateObj.velocity(1) = vx;
     end
@@ -224,7 +224,7 @@ methods
     
     function stateObj = set.vy(stateObj,vy)
         assert(isnumeric(vy) && isreal(vy) && numel(vy) == 1,...
-            'bot:state:set:vy',...
+            'bot:State:set:vy',...
             'Property "vy" must be set to a 1 x 1 real number.')
         stateObj.velocity(2) = vy;
     end
@@ -235,7 +235,7 @@ methods
     
     function stateObj = set.vz(stateObj,vz)
         assert(isnumeric(vz) && isreal(vz) && numel(vz) == 1,...
-            'bot:state:set:vz',...
+            'bot:State:set:vz',...
             'Property "vz" must be set to a 1 x 1 real number.')
         stateObj.velocity(3) = vz;
     end
@@ -246,7 +246,7 @@ methods
     
     function stateObj = set.wx(stateObj,wx)
         assert(isnumeric(wx) && isreal(wx) && numel(wx) == 1,...
-            'bot:state:set:wx',...
+            'bot:State:set:wx',...
             'Property "wx" must be set to a 1 x 1 real number.')
         stateObj.angularVelocity(1) = wx;
     end
@@ -257,7 +257,7 @@ methods
     
     function stateObj = set.wy(stateObj,wy)
         assert(isnumeric(wy) && isreal(wy) && numel(wy) == 1,...
-            'bot:state:set:wy',...
+            'bot:State:set:wy',...
             'Property "wy" must be set to a 1 x 1 real number.')
         stateObj.angularVelocity(2) = wy;
     end
@@ -268,7 +268,7 @@ methods
     
     function stateObj = set.wz(stateObj,wz)
         assert(isnumeric(wz) && isreal(wz) && numel(wz) == 1,...
-            'bot:state:set:wz',...
+            'bot:State:set:wz',...
             'Property "wz" must be set to a 1 x 1 real number.')
         stateObj.angularVelocity(3) = wz;
     end
@@ -279,7 +279,7 @@ methods
     
     function stateObj = set.vector(stateObj,vector)
         assert(isnumeric(vector) && isreal(vector) && numel(vector) == 12,...
-            'bot:state:set:vector',...
+            'bot:State:set:vector',...
             'Property "vector" must be set to a 12 x 1 real number.')
         vector = vector(:);
         stateObj.position = vector(1:3);
@@ -299,7 +299,7 @@ methods
     
     function stateObj = set.transform(stateObj,transform)
         assert(isnumeric(transform) && isreal(transform) && isequal(size(transform),[4,4]),...
-            'bot:state:set:transform',...
+            'bot:State:set:transform',...
             'Property "transform" must be set to a 4 x 4 real number.')
         
         r = transform(1:3,1:3);
@@ -326,15 +326,15 @@ end
 %         %   stateObj = stateObj.method_name(arg1)
 %         %
 %         % INPUTS:
-%         %   stateObj - (1 x 1 bot.state)
-%         %       An instance of the "bot.state" class.
+%         %   stateObj - (1 x 1 bot.State)
+%         %       An instance of the "bot.State" class.
 %         %
 %         %   arg1 - (size type) [defaultArgumentValue] 
 %         %       Description.
 %         %
 %         % OUTPUTS:
-%         %   stateObj - (1 x 1 bot.state)
-%         %       An instance of the "bot.state" class ... 
+%         %   stateObj - (1 x 1 bot.State)
+%         %       An instance of the "bot.State" class ... 
 %         %
 %         % NOTES:
 %         %
@@ -348,7 +348,7 @@ end
 %         
 %         % Check arguments for errors
 %         assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[?,?]),...
-%             'bot:state:method_name:arg1',...
+%             'bot:State:method_name:arg1',...
 %             'Input argument "arg1" must be a ? x ? matrix of real numbers.')
 %         
 %     end

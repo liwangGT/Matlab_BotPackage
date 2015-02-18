@@ -6,8 +6,8 @@ function [v,w] = motorValues2linAngVel(diffdriveObj,motorValues)
 %   [linVel,angVel] = diffdriveObj.motorValues2linAngVel(motorValues)
 %
 % INPUTS:
-%   diffdriveObj - (1 x 1 trackable.diffdrive)
-%       An instance of the "trackable.diffdrive" class.
+%   diffdriveObj - (1 x 1 bot.DiffDrive)
+%       An instance of the "bot.DiffDrive" class.
 %
 %   motorValues - (2 x 1 integers)
 %       Motor values [left; right].
