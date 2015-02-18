@@ -1,12 +1,12 @@
-classdef khepera < trackable.diffdrive
-% The "trackable.khepera" class is for the Khephera robot.
+classdef Khepera < bot.diffdrive.DiffDrive
+% The "bot.diffdrive.khepera" class is for the Khephera robot.
 %
 % NOTES:
-%   To get more information on this class type "doc trackable.khepera" into the
+%   To get more information on this class type "doc bot.diffdrive.khepera" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   @diffdrive, @trackable, @quaternion
+%   @diffdrive, @bot.diffdrive, @quaternion
 %
 % SEE ALSO: TODO: Add see alsos
 %    relatedFunction1 | relatedFunction2
@@ -19,33 +19,22 @@ classdef khepera < trackable.diffdrive
 %-------------------------------------------------------------------------------
 
 %% Properties ------------------------------------------------------------------
-% properties (Access = public)
-%     prop1 % (size type) TODO: Add description
-% end
-% 
-% properties (Access = private)
-%    prop2 % (size type) TODO: Add description
-% end
-% 
-% properties (SetObservable = true, AbortSet = true)
-%     prop3  % (size type) TODO: Add description
-% end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = khepera(varargin)
+    function kheperaObj = Khepera(varargin)
         % Constructor function for the "khepera" class.
         %
         % SYNTAX: TODO: Add syntax
-        %   kheperaObj = trackable.khepera(arg1,[superClass arguments])
+        %   kheperaObj = bot.diffdrive.khepera(arg1,[superClass arguments])
         %
         % INPUTS: TODO: Add inputs
         %   arg1 - (size type) [defaultArg1Value] 
         %       Sets the "kheperaObj.prop1" property.
         %
         % OUTPUTS:
-        %   kheperaObj - (1 x 1 trackable.khepera object) 
-        %       A new instance of the "trackable.khepera" class.
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera object) 
+        %       A new instance of the "bot.diffdrive.khepera" class.
         %
         % NOTES:
         %
@@ -59,11 +48,11 @@ methods
 
         % Check input arguments for errors TODO: Add error checks
         % assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[1,1]),...
-        %     'trackable:khepera:arg1',...
+        %     'bot.diffdrive:khepera:arg1',...
         %     'Input argument "arg1" must be a 1 x 1 real number.')
         
         % Initialize superclass TODO: Initialize superclass
-        kheperaObj = kheperaObj@trackable.diffdrive(varargin{:});
+        kheperaObj = kheperaObj@bot.diffdrive.DiffDrive(varargin{:});
         
         % Assign properties
         kheperaObj.wheelRadius = 0.021; % [m]
@@ -84,8 +73,8 @@ end
 %         %   delete(kheperaObj)
 %         %
 %         % INPUTS:
-%         %   kheperaObj - (1 x 1 trackable.khepera)
-%         %       An instance of the "trackable.khepera" class.
+%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+%         %       An instance of the "bot.diffdrive.khepera" class.
 %         %
 %         % NOTES:
 %         %
@@ -110,7 +99,7 @@ end
 %         %
 %         %-----------------------------------------------------------------------
 %         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'trackable:khepera:set:prop1',...
+%             'bot.diffdrive:khepera:set:prop1',...
 %             'Property "prop1" must be set to a 1 x 1 real number.')
 % 
 %         kheperaObj.prop1 = prop1;
@@ -156,15 +145,15 @@ end
 %         %   kheperaObj = kheperaObj.method_name(arg1)
 %         %
 %         % INPUTS:
-%         %   kheperaObj - (1 x 1 trackable.khepera)
-%         %       An instance of the "trackable.khepera" class.
+%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+%         %       An instance of the "bot.diffdrive.khepera" class.
 %         %
 %         %   arg1 - (size type) [defaultArgumentValue] 
 %         %       Description.
 %         %
 %         % OUTPUTS:
-%         %   kheperaObj - (1 x 1 trackable.khepera)
-%         %       An instance of the "trackable.khepera" class ... 
+%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+%         %       An instance of the "bot.diffdrive.khepera" class ... 
 %         %
 %         % NOTES:
 %         %
@@ -178,7 +167,7 @@ end
 %         
 %         % Check arguments for errors
 %         assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[?,?]),...
-%             'trackable:khepera:method_name:arg1',...
+%             'bot.diffdrive:khepera:method_name:arg1',...
 %             'Input argument "arg1" must be a ? x ? matrix of real numbers.')
 %         
 %     end
@@ -212,15 +201,15 @@ end
 %     %   kheperaObj = kheperaObj.method_name(arg1)
 %     %
 %     % INPUTS: TODO: Add inputs
-%     %   kheperaObj - (1 x 1 trackable.khepera)
-%     %       An instance of the "trackable.khepera" class.
+%     %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+%     %       An instance of the "bot.diffdrive.khepera" class.
 %     %
 %     %   arg1 - (size type) [defaultArgumentValue] 
 %     %       Description.
 %     %
 %     % OUTPUTS: TODO: Add outputs
-%     %   kheperaObj - (1 x 1 trackable.khepera)
-%     %       An instance of the "trackable.khepera" class . . . ???.
+%     %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+%     %       An instance of the "bot.diffdrive.khepera" class . . . ???.
 %     %
 %     % NOTES:
 %     %

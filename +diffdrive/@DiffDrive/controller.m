@@ -59,10 +59,10 @@ zTilde = (z - zBar);
 
 % Linearization
 A = zeros(2);
-B = [cos(theta) -d*sin(theta); sin(theta) d*cos(theta)];
+B = @(theta_) [cos(theta_) -d*sin(theta_); sin(theta_) d*cos(theta_)];
 
 %% Calculate
-K = lqr(A,B,Q,R);
+K = lqr(A,B(theta),Q,R);
 u = -K*zTilde;
 
 v = u(1);

@@ -1,5 +1,5 @@
 classdef DiffDrive < bot.Bot
-% The "bot.DiffDrive" classis for differential drive robots.
+% The "bot.diffdrive.DiffDrive" classis for differential drive robots.
 %
 % NOTES:
 %   To get more information on this class type "doc bot.DiffDrive" into the
