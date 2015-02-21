@@ -23,6 +23,9 @@ properties (Access = public)
     wheelRadius = 0.01 % (1 x 1 positive number) [meters] Radius of robot wheel.
     wheelBase = 0.1 % (1 x 1 positive number) [meters] Wheel base length of robot.
     speedFactor = 1; % (1 x 1 number) Conversion factor between wheel angular velocities and motor speeds
+    d = .1;
+    Q = diag([10 10]);
+    R = diag([1 10]);
 end
 
 properties (GetAccess = public, SetAccess = public)    

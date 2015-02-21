@@ -37,8 +37,7 @@ else
     time = botObj.clock();
     pause(botObj.timeStep);
 end
-
-botObj.timeRaw = time;
+botObj.timeRaw = round(time,ceil(log10(1/(botObj.timeStep)^3))); % Remove numerical errors in time
 botObj.state = state;
 
 

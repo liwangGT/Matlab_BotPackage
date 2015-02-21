@@ -19,10 +19,19 @@ classdef Khepera < bot.diffdrive.DiffDrive
 %-------------------------------------------------------------------------------
 
 %% Properties ------------------------------------------------------------------
+properties%     name
+%     id
+%     robotIP
+%     robotPort = '4555'
+%     optiIP
+%     optiPort = '3883'
+
+end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = Khepera(varargin)
+    function kheperaObj = Khepera(name,id,optiIP,varargin)
+%     function kheperaObj = Khepera(name,id,optiIP,varargin)
         % Constructor function for the "khepera" class.
         %
         % SYNTAX: TODO: Add syntax
@@ -59,6 +68,13 @@ methods
         kheperaObj.wheelBase = 0.0885; % [m]
         kheperaObj.speedFactor = 3335.8;
         kheperaObj.motorLimits = [-60000 60000];
+        
+%         kheperaObj.name = name;
+%         kheperaObj.id = id;
+%         kheperaObj.robotIP = sprintf('192.168.1.2%02.0f',id);
+%         kheperaObj.robotPort = '4555';
+%         kheperaObj.optiIP;
+%         kheperaObj.optiPort = '3883';
         
     end
 end

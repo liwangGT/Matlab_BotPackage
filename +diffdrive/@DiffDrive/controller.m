@@ -40,9 +40,9 @@ if nargin < 3, state = diffDriveObj.state; end
 if nargin < 4, desiredState = diffDriveObj.desiredState; end
 
 %% Parameters
-d = .1;
-Q = diag([10 10]);
-R = diag([1 10]);
+d = diffDriveObj.d;
+Q = diffDriveObj.Q;
+R = diffDriveObj.R;
 
 %% Variables
 % System state
