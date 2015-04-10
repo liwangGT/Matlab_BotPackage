@@ -1,4 +1,4 @@
-classdef Khepera < bot.diffdrive.DiffDrive
+classdef khepera < bot.diffdrive.DiffDrive
 % The "bot.diffdrive.khepera" class is for the Khephera robot.
 %
 % NOTES:
@@ -34,7 +34,7 @@ end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = Khepera(name,id,optitrackHost,varargin)
+    function kheperaObj = khepera(name,id,optitrackHost,varargin)
         % Constructor function for the "khepera" class.
         %
         % SYNTAX: TODO: Add syntax
@@ -49,7 +49,7 @@ methods
         %       A new instance of the "bot.diffdrive.khepera" class.
         %
         % NOTES:
-        %   Need to have the Khepera Java driver on the Java path.
+        %   Need to have the khepera Java driver on the Java path.
         %   Example:
         %       javaaddpath('/Users/Rowland/Dropbox/Matlab/Packages/+bot/+diffdrive/kheperaJavaDriver');
         %
@@ -153,18 +153,18 @@ end
 % General Methods -------------------------------------------------------------
 methods (Access = public)
     function result = init(kheperaObj,kheperaFlag,trackableFlag)
-        % The "init" method initializes the Khepera object.
+        % The "init" method initializes the khepera object.
         %
         % SYNTAX:
         %   result = kheperaObj.init()
         %   result = kheperaObj.init(kheperaFlag,trackableFlag)
         %
         % INPUTS:
-        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
         %       An instance of the "bot.diffdrive.khepera" class.
         %
         %   kheperaFlag - (1 x 1 logical) [true]
-        %       If true the Khepera driver object is initialized.
+        %       If true the khepera driver object is initialized.
         %
         %   trackableFlag - (1 x 1 logical) [true]
         %       If true the trackable object is initialized.
@@ -203,11 +203,11 @@ methods (Access = public)
         %   kheperaObj.send(input)
         %
         % INPUTS:
-        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
-        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
         %   
         %   input - (2 x 1 number)
-        %       Motor input values to send to Khepera.
+        %       Motor input values to send to khepera.
         %
         % OUTPUTS:
         %
@@ -228,8 +228,8 @@ methods (Access = public)
         %   data = kheperaObj.receive()
         %
         % INPUTS:
-        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
-        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
         %
         % OUTPUTS:
         %
@@ -247,8 +247,8 @@ methods (Access = public)
         %   time = kheperaObj.estimator()
         %
         % INPUTS:
-        %   boObj - (1 x 1 bot.diffdrive.Khepera)
-        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   boObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
         %
         % OUTPUTS:
         %   state - (1 x 1 state)
@@ -278,8 +278,8 @@ methods (Access = public)
         %   time = kheperaObj.clock()
         %
         % INPUTS:
-        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
-        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
         %
         % OUTPUTS:
         %   time - (1 x 1 number)
@@ -293,14 +293,14 @@ methods (Access = public)
     end
     
     function stop(kheperaObj)
-        % The "stop" method stops the Khepera.
+        % The "stop" method stops the khepera.
         %
         % SYNTAX:
         %   kheperaObj.stop()
         %
         % INPUTS:
-        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
-        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
         %
         % OUTPUTS:
         %

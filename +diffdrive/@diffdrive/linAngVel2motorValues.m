@@ -6,8 +6,8 @@ function motorValues = linAngVel2motorValues(diffdriveObj,v,w)
 %   diffdriveObj = diffdriveObj.linAngVel2motorValues(linVel, angVel)
 %
 % INPUTS:
-%   diffdriveObj - (1 x 1 bot.DiffDrive)
-%       An instance of the "bot.DiffDrive" class.
+%   diffdriveObj - (1 x 1 bot.diffdrive)
+%       An instance of the "bot.diffdrive" class.
 %
 %   v - (1 x 1 number)
 %       Linear velocity.

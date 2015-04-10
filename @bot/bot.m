@@ -1,8 +1,8 @@
-classdef Bot < handle
-% The "bot.Bot" class is used for mobile robots.
+classdef bot < handle
+% The "bot.bot" class is used for mobile robots.
 %
 % NOTES:
-%   To get more information on this class type "doc Bot.Bot" into the
+%   To get more information on this class type "doc bot.bot" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
@@ -57,13 +57,13 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function botObj = Bot(nInputs,nOutputs)
-        % Constructor function for the "Bot" class.
+    function botObj = bot(nInputs,nOutputs)
+        % Constructor function for the "bot" class.
         %
         % SYNTAX:
-        %   botObj = Bot()
-        %   botObj = Bot(nInputs)
-        %   botObj = Bot(nInputs,nOutputs)
+        %   botObj = bot()
+        %   botObj = bot(nInputs)
+        %   botObj = bot(nInputs,nOutputs)
         %
         % INPUTS:
         %   nInputs = (1 x 1 positive integer) [0]
@@ -73,8 +73,8 @@ methods
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
-        %   botObj - (1 x 1 Bot object) 
-        %       A new instance of the "bot.Bot" class.
+        %   botObj - (1 x 1 bot object) 
+        %       A new instance of the "bot.bot" class.
         %
         % NOTES:
         %
@@ -90,12 +90,12 @@ methods
         % Check input arguments for errors
         assert(isnumeric(nInputs) && isreal(nInputs) && numel(nInputs) == 1 && ...
                mod(nInputs,1) == 0 && nInputs >= 0,...
-            'Bot:Bot:nInputs',...
+            'bot:bot:nInputs',...
             'Input argument "nInputs" must be a 1 x 1 positive integer.')
         
         assert(isnumeric(nOutputs) && isreal(nOutputs) && numel(nOutputs) == 1 && ...
                mod(nOutputs,1) == 0 && nOutputs >= 0,...
-            'Bot:Bot:nOutputs',...
+            'bot:bot:nOutputs',...
             'Input argument "nOutputs" must be a 1 x 1 positive integer.')
         
         % Assign properties
@@ -115,7 +115,7 @@ end
 methods
     function set.time(botObj,time) 
         assert(isnumeric(time) && isreal(time) && numel(time) == 1,...
-            'Bot:Bot:set:time',...
+            'bot:bot:set:time',...
             'Property "time" must be set to a 1 x 1 real number.')
         
         if isnan(botObj.timeRaw)
@@ -141,8 +141,8 @@ methods (Access = public)
         %   time = botObj.clock()
         %
         % INPUTS:
-        %   botObj - (1 x 1 bot.Bot)
-        %       An instance of the "bot.Bot" class.
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
         %
         % OUTPUTS:
         %   time - (1 x 1 number)
@@ -163,8 +163,8 @@ methods (Access = public)
         %   state = botObj.estimator()
         %
         % INPUTS:
-        %   botObj - (1 x 1 bot.Bot)
-        %       An instance of the "bot.Bot" class.
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
         %
         % OUTPUTS:
         %   state - (1 x 1 state)
@@ -184,8 +184,8 @@ methods (Access = public)
         %   time = botObj.estimator()
         %
         % INPUTS:
-        %   botObj - (1 x 1 bot.Bot)
-        %       An instance of the "bot.Bot" class.
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
         %
         % OUTPUTS:
         %

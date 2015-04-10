@@ -1,4 +1,4 @@
-classdef Trajectory < handle
+classdef trajectory < handle
 % The "bot.Trajectory" class is used to store trajectories.
 %
 % NOTES:

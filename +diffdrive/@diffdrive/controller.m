@@ -1,21 +1,21 @@
-function input = controller(diffDriveObj,~,state,desiredState)
+function input = controller(diffdriveObj,~,state,desiredState)
 % The "controller" method caluclates an input for the given time, state,
 % and desired state.
 %
 % SYNTAX:
-%   diffDriveObj = diffDriveObj.controller(time,state,desiredState)
+%   diffdriveObj = diffdriveObj.controller(time,state,desiredState)
 %
 % INPUTS:
-%   diffDriveObj - (1 x 1 bot.Bot)
-%       An instance of the "bot.Bot" class.
+%   diffdriveObj - (1 x 1 bot.bot)
+%       An instance of the "bot.bot" class.
 %
-%   time - (1 x 1 number) [diffDriveObj.time] 
+%   time - (1 x 1 number) [diffdriveObj.time] 
 %       Current time.
 %
-%   state - (1 x 1 bot.State) [diffDriveObj.state] 
+%   state - (1 x 1 bot.State) [diffdriveObj.state] 
 %       Current state.
 %
-%   desiredState - (1 x 1 bot.State) [diffDriveObj.desiredState] 
+%   desiredState - (1 x 1 bot.State) [diffdriveObj.desiredState] 
 %       Current desired state.
 %
 % OUTPUTS:
@@ -35,14 +35,14 @@ function input = controller(diffDriveObj,~,state,desiredState)
 %-------------------------------------------------------------------------------
 
 %% Apply default values
-% if nargin < 2, time = diffDriveObj.time; end
-if nargin < 3, state = diffDriveObj.state; end
-if nargin < 4, desiredState = diffDriveObj.desiredState; end
+% if nargin < 2, time = diffdriveObj.time; end
+if nargin < 3, state = diffdriveObj.state; end
+if nargin < 4, desiredState = diffdriveObj.desiredState; end
 
 %% Parameters
-d = diffDriveObj.d;
-Q = diffDriveObj.Q;
-R = diffDriveObj.R;
+d = diffdriveObj.d;
+Q = diffdriveObj.Q;
+R = diffdriveObj.R;
 
 %% Variables
 % System state
@@ -68,6 +68,6 @@ u = -K*zTilde;
 v = u(1);
 w = u(2);
 
-input = diffDriveObj.linAngVel2motorValues(v,w);
+input = diffdriveObj.linAngVel2motorValues(v,w);
 
 end

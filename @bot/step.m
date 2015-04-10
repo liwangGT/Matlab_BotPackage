@@ -10,8 +10,8 @@ function state = step(botObj,~,~,state,~)
 %   
 %
 % INPUTS:
-%   botObj - (1 x 1 Bot.bot)
-%       An instance of the "Bot.bot" class.
+%   botObj - (1 x 1 bot.bot)
+%       An instance of the "bot.bot" class.
 %
 %   timeStep - (1 x 1 number) [botObj.timeStep] 
 %       Time step duration.

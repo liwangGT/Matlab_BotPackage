@@ -1,15 +1,15 @@
-classdef DiffDrive < bot.Bot
-% The "bot.diffdrive.DiffDrive" classis for differential drive robots.
+classdef diffdrive < bot.bot
+% The "bot.diffdrive.diffdrive" classis for differential drive robots.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.DiffDrive" into the
+%   To get more information on this class type "doc bot.diffdrive" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
 %   +bot
 %
 % SEE ALSO: TODO: Add see alsos
-%    bot.Bot | relatedFunction2
+%    bot.bot | relatedFunction2
 %
 % AUTHOR:
 %    Rowland O'Flaherty (www.rowlandoflaherty.com)
@@ -34,19 +34,19 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function diffdriveObj = DiffDrive(nOutputs)
-        % Constructor function for the "DiffDrive" class.
+    function diffdriveObj = diffdrive(nOutputs)
+        % Constructor function for the "diffdrive" class.
         %
         % SYNTAX:
-        %   diffdriveObj = bot.DiffDrive(nOutputs)
+        %   diffdriveObj = bot.diffdrive(nOutputs)
         %
         % INPUTS:
         %   nOutputs = (1 x 1 positive integer) [0]
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
-        %   diffdriveObj - (1 x 1 bot.DiffDrive object) 
-        %       A new instance of the "bot.DiffDrive" class.
+        %   diffdriveObj - (1 x 1 bot.diffdrive object) 
+        %       A new instance of the "bot.diffdrive" class.
         %
         % NOTES:
         %
@@ -60,7 +60,7 @@ methods
         
         % Initialize superclass
         nInputs = 2;
-        diffdriveObj = diffdriveObj@bot.Bot(nInputs,nOutputs);
+        diffdriveObj = diffdriveObj@bot.bot(nInputs,nOutputs);
         
         % Assign properties
     end
@@ -71,7 +71,7 @@ end
 % methods
 %     function diffdriveObj = set.prop1(diffdriveObj,prop1)
 %         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'bot:DiffDrive:set:prop1',...
+%             'bot:diffdrive:set:prop1',...
 %             'Property "prop1" must be set to a 1 x 1 real number.')
 % 
 %         diffdriveObj.prop1 = prop1;

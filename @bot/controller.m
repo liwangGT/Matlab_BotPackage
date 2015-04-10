@@ -6,8 +6,8 @@ function input = controller(botObj,~,~,~)
 %   botObj = botObj.controller(time,state,desiredState)
 %
 % INPUTS:
-%   botObj - (1 x 1 bot.Bot)
-%       An instance of the "bot.Bot" class.
+%   botObj - (1 x 1 bot.bot)
+%       An instance of the "bot.bot" class.
 %
 %   time - (1 x 1 number) [botObj.time] 
 %       Current time.
