@@ -19,19 +19,22 @@ classdef Khepera < bot.diffdrive.DiffDrive
 %-------------------------------------------------------------------------------
 
 %% Properties ------------------------------------------------------------------
-properties%     name
-%     id
-%     robotIP
-%     robotPort = '4555'
-%     optiIP
-%     optiPort = '3883'
+properties (Access = public)
+    id
+    host
+    port = '4555'
+    trackable = []
+    kheperaInitialized = false
+    trackableInitialized = false
+end
 
+properties (Access = public)
+    javaHandle = []
 end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = Khepera(name,id,optiIP,varargin)
-%     function kheperaObj = Khepera(name,id,optiIP,varargin)
+    function kheperaObj = Khepera(name,id,optitrackHost,varargin)
         % Constructor function for the "khepera" class.
         %
         % SYNTAX: TODO: Add syntax
@@ -46,14 +49,16 @@ methods
         %       A new instance of the "bot.diffdrive.khepera" class.
         %
         % NOTES:
+        %   Need to have the Khepera Java driver on the Java path.
+        %   Example:
+        %       javaaddpath('/Users/Rowland/Dropbox/Matlab/Packages/+bot/+diffdrive/kheperaJavaDriver');
         %
         %-----------------------------------------------------------------------
-        
-        % Check number of arguments TODO: Add number argument check
-        narginchk(0,3)
 
-        % Apply default values TODO: Add apply defaults
-        % if nargin < 1, arg1 = 0; end
+        % Apply default values
+        if nargin < 1, name = ''; end;
+        if nargin < 2, id = nan; end
+        if nargin < 3, optitrackHost = '192.168.2.145'; end
 
         % Check input arguments for errors TODO: Add error checks
         % assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[1,1]),...
@@ -69,35 +74,41 @@ methods
         kheperaObj.speedFactor = 3335.8;
         kheperaObj.motorLimits = [-60000 60000];
         
-%         kheperaObj.name = name;
-%         kheperaObj.id = id;
-%         kheperaObj.robotIP = sprintf('192.168.1.2%02.0f',id);
-%         kheperaObj.robotPort = '4555';
-%         kheperaObj.optiIP;
-%         kheperaObj.optiPort = '3883';
+        kheperaObj.d = .01;
+        kheperaObj.Q = diag([10,10]);
+        kheperaObj.R = diag([20;1]);
         
+        kheperaObj.id = id;
+        kheperaObj.host = sprintf('192.168.1.2%02.0f',id);
+        
+        if ~isempty(name)
+            kheperaObj.trackable = trackable.trackable(name,optitrackHost);
+            kheperaObj.javaHandle = javaObject('matlab.simulator.k3.K3Driver', kheperaObj.host, int32(str2double(kheperaObj.port)));
+        end
     end
 end
 %-------------------------------------------------------------------------------
 
 %% Destructor ------------------------------------------------------------------
-% methods (Access = public)
-%     function delete(kheperaObj)
-%         % Destructor function for the "kheperaObj" class.
-%         %
-%         % SYNTAX:
-%         %   delete(kheperaObj)
-%         %
-%         % INPUTS:
-%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
-%         %       An instance of the "bot.diffdrive.khepera" class.
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-%         
-%     end
-% end
+methods (Access = public)
+    function delete(kheperaObj)
+        % Destructor function for the "kheperaObj" class.
+        %
+        % SYNTAX:
+        %   delete(kheperaObj)
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        if ~isempty(kheperaObj.javaHandle)
+            kheperaObj.javaHandle.mClose();
+        end
+    end
+end
 %-------------------------------------------------------------------------------
 
 %% Property Methods ------------------------------------------------------------
@@ -139,104 +150,172 @@ end
 % end
 %-------------------------------------------------------------------------------
 
-%% Listener Methods ------------------------------------------------------------
-% methods (Access = public)
-%     function eventNameEvent(kheperaObj,sourceObj,eventData)
-%         % Listener response to the "eventName" event.
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-%         
-%     end
-% end
-%-------------------------------------------------------------------------------
+% General Methods -------------------------------------------------------------
+methods (Access = public)
+    function result = init(kheperaObj,kheperaFlag,trackableFlag)
+        % The "init" method initializes the Khepera object.
+        %
+        % SYNTAX:
+        %   result = kheperaObj.init()
+        %   result = kheperaObj.init(kheperaFlag,trackableFlag)
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.khepera" class.
+        %
+        %   kheperaFlag - (1 x 1 logical) [true]
+        %       If true the Khepera driver object is initialized.
+        %
+        %   trackableFlag - (1 x 1 logical) [true]
+        %       If true the trackable object is initialized.
+        %
+        % OUTPUTS:
+        %   result - (1 x 1 logical) 
+        %       True if initialized.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        if nargin < 2; kheperaFlag = true; end
+        if nargin < 3; trackableFlag = true; end
 
-%% General Methods -------------------------------------------------------------
-% methods (Access = public)
-%     function kheperaObj = method_name(kheperaObj,arg1)
-%         % The "method_name" method ...
-%         %
-%         % SYNTAX:
-%         %   kheperaObj = kheperaObj.method_name(arg1)
-%         %
-%         % INPUTS:
-%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
-%         %       An instance of the "bot.diffdrive.khepera" class.
-%         %
-%         %   arg1 - (size type) [defaultArgumentValue] 
-%         %       Description.
-%         %
-%         % OUTPUTS:
-%         %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
-%         %       An instance of the "bot.diffdrive.khepera" class ... 
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-% 
-%         % Check number of arguments
-%         narginchk(1,2)
-%         
-%         % Apply default values
-%         if nargin < 2, arg1 = 0; end
-%         
-%         % Check arguments for errors
-%         assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[?,?]),...
-%             'bot.diffdrive:khepera:method_name:arg1',...
-%             'Input argument "arg1" must be a ? x ? matrix of real numbers.')
-%         
-%     end
-%     
-% end
-%-------------------------------------------------------------------------------
-
-%% Converting Methods ----------------------------------------------------------
-% methods
-%     function anOtherObject = otherObject
-%         % Function to convert khepera object to a otherObject object.
-%         %
-%         % SYNTAX:
-%         %	  otherObject(kheperaObj)
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-%         
-% 
-%     end
-% 
-% end
-%-------------------------------------------------------------------------------
-
-%% Abstract Methods ------------------------------------------------------------
-% methods (Abstract = true)
-%     %  The "method_name" method . . .  TODO: Add description
-%     %
-%     % SYNTAX: TODO: Add syntax
-%     %   kheperaObj = kheperaObj.method_name(arg1)
-%     %
-%     % INPUTS: TODO: Add inputs
-%     %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
-%     %       An instance of the "bot.diffdrive.khepera" class.
-%     %
-%     %   arg1 - (size type) [defaultArgumentValue] 
-%     %       Description.
-%     %
-%     % OUTPUTS: TODO: Add outputs
-%     %   kheperaObj - (1 x 1 bot.diffdrive.khepera)
-%     %       An instance of the "bot.diffdrive.khepera" class . . . ???.
-%     %
-%     % NOTES:
-%     %
-%     %---------------------------------------------------------------------------
-%     output = someAbstractMethod(kheperaObj,arg1)
-% end
+        result = true;
+        if kheperaFlag
+            try
+                kheperaObj.javaHandle.mSendInit();
+                kheperaObj.kheperaInitialized = true;
+            catch err %#ok<NASGU>
+                kheperaObj.kheperaInitialized = false;
+            end
+            result = kheperaObj.kheperaInitialized;
+        end
+        if trackableFlag
+            kheperaObj.trackableInitialized = kheperaObj.trackable.init();
+            result = result & kheperaObj.trackableInitialized;
+        end
+    end
+    
+    function send(kheperaObj,input)
+        % The "send" method sends data to the robot.
+        %
+        % SYNTAX:
+        %   kheperaObj.send()
+        %   kheperaObj.send(input)
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.Khepera" class.
+        %   
+        %   input - (2 x 1 number)
+        %       Motor input values to send to Khepera.
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        if nargin < 2; input = kheperaObj.input; end;
+        input = min(max(input,kheperaObj.motorLimits(1)),kheperaObj.motorLimits(2));
+        velL = input(1);
+        velR = input(2);
+        kheperaObj.javaHandle.mSendControl(velR,velL)
+    end
+    
+    function data = receive(kheperaObj)
+        % The "receive" method receives data from the robot.
+        %
+        % SYNTAX:
+        %   data = kheperaObj.receive()
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.Khepera" class.
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        data = kheperaObj.javaHandle.mRecvData();
+    end
+    
+    function state = estimator(kheperaObj)
+        % The "estimator" method returns the current state estimate for the
+        % system.
+        %
+        % SYNTAX:
+        %   time = kheperaObj.estimator()
+        %
+        % INPUTS:
+        %   boObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.Khepera" class.
+        %
+        % OUTPUTS:
+        %   state - (1 x 1 state)
+        %       Current state estimate.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        
+        state = kheperaObj.state;
+        posPrev = state.position;
+        timePrev = kheperaObj.trackable.time;
+        
+        kheperaObj.trackable.update();
+        state.position = kheperaObj.trackable.position;
+        state.orientation = kheperaObj.trackable.orientation;
+        state.velocity = (state.position - posPrev) / (kheperaObj.trackable.time - timePrev);
+        if isinf(abs(state.velocity))
+            state.velocity = [0;0;0];
+        end
+    end
+    
+    function time = clock(kheperaObj)
+        % The "clock" method returns the current time for the system.
+        %
+        % SYNTAX:
+        %   time = kheperaObj.clock()
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.Khepera" class.
+        %
+        % OUTPUTS:
+        %   time - (1 x 1 number)
+        %       Current time.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        
+        time = kheperaObj.trackable.time;
+    end
+    
+    function stop(kheperaObj)
+        % The "stop" method stops the Khepera.
+        %
+        % SYNTAX:
+        %   kheperaObj.stop()
+        %
+        % INPUTS:
+        %   kheperaObj - (1 x 1 bot.diffdrive.Khepera)
+        %       An instance of the "bot.diffdrive.Khepera" class.
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        
+        kheperaObj.send([0;0]);
+    end
+end
 %-------------------------------------------------------------------------------
 
 %% Methods in separte files ----------------------------------------------------
 % methods (Access = public)
-%     kheperaObj = someMethod(kheperaObj,arg1)
+% 
 % end
 %-------------------------------------------------------------------------------
     

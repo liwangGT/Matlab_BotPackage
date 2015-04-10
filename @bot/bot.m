@@ -1,12 +1,12 @@
 classdef Bot < handle
-% The "Bot.Bot" class is used for mobile robots.
+% The "bot.Bot" class is used for mobile robots.
 %
 % NOTES:
 %   To get more information on this class type "doc Bot.Bot" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   +Bot, quaternion.m
+%   +bot, quaternion.m
 %
 % SEE ALSO: TODO: Add see alsos
 %    relatedFunction1 | relatedFunction2
@@ -74,7 +74,7 @@ methods
         %
         % OUTPUTS:
         %   botObj - (1 x 1 Bot object) 
-        %       A new instance of the "Bot.Bot" class.
+        %       A new instance of the "bot.Bot" class.
         %
         % NOTES:
         %
@@ -106,7 +106,7 @@ methods
         botObj.time = 0;
         botObj.state = bot.State;
         botObj.desiredState = bot.State;
-        botObj.tape = bot.Trajectory;
+        botObj.tape = bot.Trajectory(nInputs);
     end
 end
 %-------------------------------------------------------------------------------
@@ -141,8 +141,8 @@ methods (Access = public)
         %   time = botObj.clock()
         %
         % INPUTS:
-        %   botObj - (1 x 1 Bot.Bot)
-        %       An instance of the "Bot.Bot" class.
+        %   botObj - (1 x 1 bot.Bot)
+        %       An instance of the "bot.Bot" class.
         %
         % OUTPUTS:
         %   time - (1 x 1 number)
@@ -153,7 +153,46 @@ methods (Access = public)
         %-----------------------------------------------------------------------
         
         time = toc(botObj.ticID);
-    end   
+    end
+    
+    function state = estimator(botObj)
+        % The "estimator" method returns the current state estimate for the
+        % system.
+        %
+        % SYNTAX:
+        %   state = botObj.estimator()
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.Bot)
+        %       An instance of the "bot.Bot" class.
+        %
+        % OUTPUTS:
+        %   state - (1 x 1 state)
+        %       Current state estimate.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        
+        state = botObj.state;
+    end
+    
+    function send(~)
+        % The "send" method sends data to the robot.
+        %
+        % SYNTAX:
+        %   time = botObj.estimator()
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.Bot)
+        %       An instance of the "bot.Bot" class.
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+    end
 end
 %-------------------------------------------------------------------------------
 

@@ -25,16 +25,19 @@ function update(botObj)
 
 %% Record current
 if botObj.record
-    botObj.tape.append(botObj.time,botObj.state);
+    botObj.tape.append(botObj.time,botObj.state,botObj.input);
 end
 
 %% Update
-botObj.input = botObj.controller();
 if botObj.simulate
+    botObj.input = botObj.controller();
     state = botObj.step();
     time = botObj.timeRaw + botObj.timeStep;
 else
+    state = botObj.estimator();
+    botObj.input = botObj.controller();
     time = botObj.clock();
+    botObj.send();
     pause(botObj.timeStep);
 end
 botObj.timeRaw = round(time,ceil(log10(1/(botObj.timeStep)^3))); % Remove numerical errors in time

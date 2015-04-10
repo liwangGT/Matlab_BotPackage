@@ -84,42 +84,37 @@ end
 %-------------------------------------------------------------------------------
 
 %% General Methods -------------------------------------------------------------
-% methods (Access = public)
-%     function diffdriveObj = method_name(diffdriveObj,arg1)
-%         % The "method_name" method ...
-%         %
-%         % SYNTAX:
-%         %   diffdriveObj = diffdriveObj.method_name(arg1)
-%         %
-%         % INPUTS:
-%         %   diffdriveObj - (1 x 1 bot.DiffDrive)
-%         %       An instance of the "bot.DiffDrive" class.
-%         %
-%         %   arg1 - (size type) [defaultArgumentValue] 
-%         %       Description.
-%         %
-%         % OUTPUTS:
-%         %   diffdriveObj - (1 x 1 bot.DiffDrive)
-%         %       An instance of the "bot.DiffDrive" class ... 
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-% 
-%         % Check number of arguments
-%         narginchk(1,2)
-%         
-%         % Apply default values
-%         if nargin < 2, arg1 = 0; end
-%         
-%         % Check arguments for errors
-%         assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[?,?]),...
-%             'bot:DiffDrive:method_name:arg1',...
-%             'Input argument "arg1" must be a ? x ? matrix of real numbers.')
-%         
-%     end
-%     
-% end
+methods (Access = public)
+    function goto(diffdriveObj,desiredPoint,ballSize)
+        % The "goto" method drives the robot to the "desiredPoint" and stops
+        % when the robot is "ballSize" of the point.
+        %
+        % SYNTAX:
+        %   time = diffdriveObj.clock()
+        %
+        % INPUTS:
+        %   diffdriveObj - (1 x 1 bot.diffdrive.diffdrive)
+        %       An instance of the "bot.diffdrive.diffdrive" class.
+        %
+        %   desiredPoint - (2 x 1 number)
+        %       Desired point to goto.
+        %
+        %   ballSize - (2 x 1 number)
+        %       Ball size of goal point.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        diffdriveObj.state = diffdriveObj.estimator();
+        diffdriveObj.desiredState.position(1:2) = desiredPoint;
+        
+        while norm(diffdriveObj.desiredState.position(1:2) - diffdriveObj.state.position(1:2)) > ballSize
+            diffdriveObj.update()
+        end
+        
+    end
+    
+end
 %-------------------------------------------------------------------------------
 
 %% Methods in separte files ----------------------------------------------------
