@@ -1,5 +1,8 @@
 classdef bot < handle
-% The "bot.bot" class is used for mobile robots.
+% The "bot.bot" class is used for creating mobile robots. In general it
+% should be used as an abstract class (i.e. other more specific robot
+% classes should inherit from the bot class), but it is not an abstract
+% class (i.e. creating instances of the bot class is possible).
 %
 % NOTES:
 %   To get more information on this class type "doc bot.bot" into the
@@ -26,7 +29,7 @@ properties (Access = public)
     output % (nOutputs x 1 number) Current ouput.
     desiredState % (1 x 1 bot.State) Desired state.
     timeStep % (1 x 1 positive number) Time step duration.
-    simulate = true; % (1 x 1 logical) If true simulation is run.
+    simulate = true; % (1 x 1 logical) If true runs in simulation.
     record = false % (1 x 1 logical) If true tape recorder is on.
 end
 
@@ -177,6 +180,72 @@ methods (Access = public)
         state = botObj.state;
     end
     
+    function input = controller(botObj,~,~,~)
+        % The "controller" method caluclates an input for the given time, state,
+        % and desired state.
+        %
+        % SYNTAX:
+        %   botObj = botObj.controller(time,state,desiredState)
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
+        %
+        %   time - (1 x 1 number) [botObj.time] 
+        %       Current time.
+        %
+        %   state - (1 x 1 bot.State) [botObj.state] 
+        %       Current state.
+        %
+        %   desiredState - (1 x 1 bot.State) [botObj.desiredState] 
+        %       Current desired state.
+        %
+        % OUTPUTS:
+        %   input - (nInputs x 1 number)
+        %       System input.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        
+        input = zeros(botObj.nInputs,1);
+    end
+    
+    function state = step(botObj,~,~,~,~)
+        % The "step" method simulates system forward by one time step.
+        %
+        % SYNTAX:
+        %   state = botObj.step(timeStep,time,state,input)
+        %   
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
+        %
+        %   timeStep - (1 x 1 number) [botObj.timeStep] 
+        %       Time step duration.
+        %
+        %   time - (1 x 1 number) [botObj.time] 
+        %       Current time.
+        %
+        %   state - (1 x 1 state) [botObj.state] 
+        %       Current state.
+        %
+        %   input - (1 x 1 state) [botObj.input] 
+        %       Current input.
+        %
+        % OUTPUTS:
+        %   state - (1 x 1 state)
+        %       New state at one time step forward.
+        %
+        % NOTES:
+        %
+        %
+        %-----------------------------------------------------------------------
+        
+        state = botObj.state;
+    end
+    
     function send(~)
         % The "send" method sends data to the robot.
         %
@@ -199,8 +268,6 @@ end
 %% Methods in separte files ----------------------------------------------------
 methods (Access = public)
     update(botObj,timeRaw,positionRaw,orientationRaw)
-    state = step(botObj,timeStep,time,state,input)
-    input = controller(botObj,time,state,desiredState)
 end
 %-------------------------------------------------------------------------------
     
