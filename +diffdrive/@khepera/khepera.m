@@ -1,4 +1,4 @@
-classdef khepera < bot.diffdrive.DiffDrive
+classdef khepera < bot.diffdrive.diffdrive
 % The "bot.diffdrive.khepera" class is for the Khephera robot.
 %
 % NOTES:
@@ -66,7 +66,7 @@ methods
         %     'Input argument "arg1" must be a 1 x 1 real number.')
         
         % Initialize superclass TODO: Initialize superclass
-        kheperaObj = kheperaObj@bot.diffdrive.DiffDrive(varargin{:});
+        kheperaObj = kheperaObj@bot.diffdrive.diffdrive(varargin{:});
         
         % Assign properties
         kheperaObj.wheelRadius = 0.021; % [m]
@@ -150,7 +150,7 @@ end
 % end
 %-------------------------------------------------------------------------------
 
-% General Methods -------------------------------------------------------------
+%% General Methods -------------------------------------------------------------
 methods (Access = public)
     function result = init(kheperaObj,kheperaFlag,trackableFlag)
         % The "init" method initializes the khepera object.
@@ -180,18 +180,23 @@ methods (Access = public)
         if nargin < 3; trackableFlag = true; end
 
         result = true;
-        if kheperaFlag
-            try
-                kheperaObj.javaHandle.mSendInit();
-                kheperaObj.kheperaInitialized = true;
-            catch err %#ok<NASGU>
-                kheperaObj.kheperaInitialized = false;
+        if ~kheperaObj.simulate
+            if kheperaFlag
+                try
+                    kheperaObj.javaHandle.mSendInit();
+                    kheperaObj.kheperaInitialized = true;
+                catch err %#ok<NASGU>
+                    kheperaObj.kheperaInitialized = false;
+                end
+                result = kheperaObj.kheperaInitialized;
             end
-            result = kheperaObj.kheperaInitialized;
-        end
-        if trackableFlag
-            kheperaObj.trackableInitialized = kheperaObj.trackable.init();
-            result = result & kheperaObj.trackableInitialized;
+            if trackableFlag
+                kheperaObj.trackableInitialized = kheperaObj.trackable.init();
+                result = result & kheperaObj.trackableInitialized;
+            end
+            if result
+                kheperaObj.state = kheperaObj.estimator();
+            end
         end
     end
     
@@ -258,6 +263,8 @@ methods (Access = public)
         %
         %-----------------------------------------------------------------------
         
+        % FIXME: This should only happen if trackable is being used.
+        % Otherwise the state should be estimated some other way.
         state = kheperaObj.state;
         posPrev = state.position;
         timePrev = kheperaObj.trackable.time;

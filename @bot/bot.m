@@ -107,9 +107,9 @@ methods
         botObj.ticID = tic;
         botObj.timeStep = .1;
         botObj.time = 0;
-        botObj.state = bot.State;
-        botObj.desiredState = bot.State;
-        botObj.tape = bot.Trajectory(nInputs);
+        botObj.state = bot.state;
+        botObj.desiredState = bot.state;
+        botObj.tape = bot.trajectory(nInputs);
     end
 end
 %-------------------------------------------------------------------------------

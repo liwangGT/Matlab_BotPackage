@@ -1,8 +1,8 @@
 classdef trajectory < handle
-% The "bot.Trajectory" class is used to store trajectories.
+% The "bot.trajectory" class is used to store trajectories.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.Trajectory" into the
+%   To get more information on this class type "doc bot.trajectory" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
@@ -25,20 +25,20 @@ properties (GetAccess = public, SetAccess = private)
 end
 
 properties (GetAccess = public, SetAccess = private, Hidden = true)
-    timeVec = nan(1,0) % (1 x ? number) Trajectory time vector.
-    posVec = nan(3,0) % (3 x ? number) Trajectory position vector (x,y,z)
-    oriVec = nan(4,0) % (4 x ? number) Trajectory orientation vector (quaternions)
-    velVec = nan(3,0) % (3 x ? number) Trajectory velocity vector (vx,vy,vz)
-    angVec = nan(3,0) % (3 x ? number) Trajectory angular velocity vector (wx,wy,wz)
-    inputVec = nan(0,0) % (m x ? number) Trajectory input vector
+    timeVec = nan(1,0) % (1 x ? number) trajectory time vector.
+    posVec = nan(3,0) % (3 x ? number) trajectory position vector (x,y,z)
+    oriVec = nan(4,0) % (4 x ? number) trajectory orientation vector (quaternions)
+    velVec = nan(3,0) % (3 x ? number) trajectory velocity vector (vx,vy,vz)
+    angVec = nan(3,0) % (3 x ? number) trajectory angular velocity vector (wx,wy,wz)
+    inputVec = nan(0,0) % (m x ? number) trajectory input vector
 end
 
 properties (Dependent = true, SetAccess = private)
-    time % (1 x length number) Trajectory time.
-    position % (3 x length number) Trajectory position.
-    orientation % (4 x length number) Trajectory orientation.
-    velocity % (3 x length number) Trajectory velocity.
-    angularVelocity  % (3 x length number) Trajectory velocity.
+    time % (1 x length number) trajectory time.
+    position % (3 x length number) trajectory position.
+    orientation % (4 x length number) trajectory orientation.
+    velocity % (3 x length number) trajectory velocity.
+    angularVelocity  % (3 x length number) trajectory velocity.
     x
     y
     z
@@ -64,11 +64,11 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function trajectoryObj = Trajectory(nInputs,initLength)
-        % Constructor function for the "Trajectory" class.
+    function trajectoryObj = trajectory(nInputs,initLength)
+        % Constructor function for the "trajectory" class.
         %
         % SYNTAX:
-        %   trajectoryObj = bot.Trajectory(nInputs,initLength)
+        %   trajectoryObj = bot.trajectory(nInputs,initLength)
         %
         % INPUTS:
         %   nInputs - (1 x 1 positive interger) [0]
@@ -77,8 +77,8 @@ methods
         %       Initializes length of trajectory
         %
         % OUTPUTS:
-        %   trajectoryObj - (1 x 1 bot.Trajectory object) 
-        %       A new instance of the "bot.Trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.trajectory object) 
+        %       A new instance of the "bot.trajectory" class.
         %
         % NOTES:
         %
@@ -94,12 +94,12 @@ methods
         % Check input arguments for errors
         assert(isnumeric(nInputs) && isreal(nInputs) && numel(nInputs) == 1 && ...
             mod(nInputs,1) == 0 && nInputs >= 0,...
-            'bot:Trajectory:nInputs',...
+            'bot:trajectory:nInputs',...
             'Input argument "nInputs" must be a 1 x 1 positive integer.')
         
         assert(isnumeric(initLength) && isreal(initLength) && numel(initLength) == 1 && ...
             mod(initLength,1) == 0 && initLength > 0,...
-            'bot:Trajectory:initLength',...
+            'bot:trajectory:initLength',...
             'Input argument "initLength" must be a 1 x 1 positive integer.')
         
         % Initialize
@@ -114,7 +114,7 @@ end
 methods
 %     function trajectoryObj = set.prop1(trajectoryObj,prop1)
 %         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'bot:Trajectory:set:prop1',...
+%             'bot:trajectory:set:prop1',...
 %             'Property "prop1" must be set to a 1 x 1 real number.')
 % 
 %         trajectoryObj.prop1 = prop1;
@@ -159,8 +159,8 @@ methods (Access = public)
         %   trajectoryObj = trajectoryObj.append(trajectoryObj,time,states,inputs)
         %
         % INPUTS:
-        %   trajectoryObj - (1 x 1 bot.Trajectory)
-        %       An instance of the "bot.Trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.trajectory)
+        %       An instance of the "bot.trajectory" class.
         %
         %   time - (1 x ? number)
         %       New time data.
@@ -182,19 +182,19 @@ methods (Access = public)
 
         % Check arguments for errors
         assert(isnumeric(time) && isreal(time) && isvector(time),...
-            'bot:Trajectory:append:time',...
+            'bot:trajectory:append:time',...
             'Input argument "time" must be a vector of real numbers.')
         time = time(:)';
         n = numel(time);
         
         assert(isa(states,'bot.State') && isvector(states) && numel(states) == n,...
-            'bot:Trajectory:append:states',...
+            'bot:trajectory:append:states',...
             'Input argument "states" must be a 1 x %d vector of states.',n)
         states = states(:)';
         
         if ~isempty(inputs)
             assert(isnumeric(inputs) && isreal(inputs) && size(inputs,1) == trajectoryObj.nInputs && size(inputs,2) == n,...
-                'bot:Trajectory:append:inputs',...
+                'bot:trajectory:append:inputs',...
                 'Input argument "inputs" must be a %d x %d matrix of inputs.',trajectoryObj.nInputs,n)
         end
         
@@ -224,8 +224,8 @@ methods (Access = public, Hidden = true)
         %   trajectoryObj = trajectoryObj.increaseLength(l)
         %
         % INPUTS:
-        %   trajectoryObj - (1 x 1 bot.Trajectory)
-        %       An instance of the "bot.Trajectory" class.
+        %   trajectoryObj - (1 x 1 bot.trajectory)
+        %       An instance of the "bot.trajectory" class.
         %
         %   l - (1 x 1 positive number) [trajectoryObj.catSize]
         %       Length to increase vectors by. 
@@ -242,7 +242,7 @@ methods (Access = public, Hidden = true)
         
         % Check arguments for errors
         assert(isnumeric(l) && isreal(l) && numel(l) == 1 && mod(l,1) == 0 && l > 0,...
-            'bot:Trajectory:increaseLength:l',...
+            'bot:trajectory:increaseLength:l',...
             'Input argument "l" must be a 1 x 1 positive integer.')
         
         trajectoryObj.timeVec = [trajectoryObj.timeVec nan(1,l)];
