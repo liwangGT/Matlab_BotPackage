@@ -43,5 +43,9 @@ end
 botObj.timeRaw = round(time,ceil(log10(1/(botObj.timeStep)^3))); % Remove numerical errors in time
 botObj.state = state;
 
+if ~isempty(botObj.transformHandle) && ishghandle(botObj.transformHandle) && ishghandle(get(botObj.transformHandle,'Parent'))
+    set(botObj.transformHandle,'Matrix',botObj.state.transform);
+end
+
 
 end

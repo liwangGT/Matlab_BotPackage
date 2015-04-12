@@ -53,9 +53,10 @@ properties (GetAccess = public, SetAccess = private)
 end
 
 properties (Access = public, Hidden = true)
-    figHandle = [] % (1 x 1 graphics object) Figure handle for plot
-    axisHandle = [] % (1 x 1 graphics object) Axis handle for plot
-    graphicsHandles = [] % (? x 1 graphics objects) Graphics handles for plot
+    figHandle = [] % (1 x 1 graphics object) Figure handle for plot.
+    axisHandle = [] % (1 x 1 graphics object) Axis handle for plot.
+    graphicsHandles = [] % (? x 1 graphics objects) Graphics handles for plot.
+    transformHandle = [] % (1 x 1 hgtransform object) hgtransform graphics object.
 end
 
 %% Constructor -----------------------------------------------------------------
@@ -109,7 +110,8 @@ methods
         botObj.time = 0;
         botObj.state = bot.state;
         botObj.desiredState = bot.state;
-        botObj.tape = bot.trajectory(nInputs);
+        botObj.tape = bot.trajectory(nInputs);       
+         
     end
 end
 %-------------------------------------------------------------------------------
@@ -250,7 +252,7 @@ methods (Access = public)
         % The "send" method sends data to the robot.
         %
         % SYNTAX:
-        %   time = botObj.estimator()
+        %   botObj.send()
         %
         % INPUTS:
         %   botObj - (1 x 1 bot.bot)
@@ -261,6 +263,70 @@ methods (Access = public)
         % NOTES:
         %
         %-----------------------------------------------------------------------
+    end
+    
+    function addGraphicToPlot(botObj,axH)
+        % The "addGraphicToPlot" method adds the botObj's graphic to the
+        % given plot.
+        %
+        % SYNTAX:
+        %   botObj.addGraphicToPlot(axH)
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
+        %
+        %   axH - (1 x 1 hghandle object) [gca]
+        %       Axis to add graphic to.
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        if nargin < 2; axH = gca; end
+        
+        assert(ishghandle(axH),...
+            'bot:addGraphicToPlot:axH',...
+            'Input argument "axH" must be a axis handle.')
+        
+        botObj.transformHandle = hgtransform('Parent',axH);
+        [geometry,color] = bot.bot.defaultGraphic();
+        
+        nextPlot = get(axH,'NextPlot');
+        set(axH,'NextPlot','add')
+        patch('Parent',botObj.transformHandle,...
+              'Vertices',geometry,...
+              'Faces',1:size(geometry,1),...
+              'FaceColor','flat',...
+              'FaceVertexCData',color);
+        set(botObj.transformHandle,'Matrix',botObj.state.transform);
+        set(axH,'NextPlot',nextPlot);
+    end
+end
+
+methods (Static)
+    function [geometry,color] = defaultGraphic()
+        % The "defaultGraphic" method returns the patch geometry and color
+        % for the default bot graphic.
+        %
+        % SYNTAX:
+        %   [geometry,color] = bot.bot.defaultGraphic()
+        %
+        % INPUTS:
+        %
+        % OUTPUTS:
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        n = 15;
+        t = linspace(atan(5/2.5),2*pi-atan(5/2.5),n)';
+        curve = 2.5*[cos(t),sin(t),zeros(n,1)];
+        geometry = [   5,   0,   0;...
+            curve];
+        geometry = 1/20*geometry;
+        color = [.8 .8 .8];
     end
 end
 %-------------------------------------------------------------------------------

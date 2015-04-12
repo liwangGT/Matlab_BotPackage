@@ -65,7 +65,7 @@ methods
         %     'bot.diffdrive:khepera:arg1',...
         %     'Input argument "arg1" must be a 1 x 1 real number.')
         
-        % Initialize superclass TODO: Initialize superclass
+        % Initialize superclass
         kheperaObj = kheperaObj@bot.diffdrive.diffdrive(varargin{:});
         
         % Assign properties
