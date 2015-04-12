@@ -34,15 +34,24 @@ end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = khepera(name,id,optitrackHost,varargin)
+    function kheperaObj = khepera(simulate,name,id,optitrackHost,varargin)
         % Constructor function for the "khepera" class.
         %
-        % SYNTAX: TODO: Add syntax
-        %   kheperaObj = bot.diffdrive.khepera(arg1,[superClass arguments])
+        % SYNTAX:
+        %   kheperaObj = bot.diffdrive.khepera(simulate,name,id,optitrackHost)
         %
-        % INPUTS: TODO: Add inputs
-        %   arg1 - (size type) [defaultArg1Value] 
-        %       Sets the "kheperaObj.prop1" property.
+        % INPUTS:
+        %   simulate - (1 x 1 logical) [true]
+        %       Sets the "simulate" property.
+        %
+        %   name - (string) ['']
+        %       Sets the "name" property.
+        %
+        %   id - (1 x 1 positive integer or nan) [nan]
+        %       Sets the "id" property.
+        %
+        %   optitrackHost - (string) ['192.168.2.145']
+        %       Sets the "optitrackHost" property.
         %
         % OUTPUTS:
         %   kheperaObj - (1 x 1 bot.diffdrive.khepera object) 
@@ -56,17 +65,13 @@ methods
         %-----------------------------------------------------------------------
 
         % Apply default values
-        if nargin < 1, name = ''; end;
-        if nargin < 2, id = nan; end
-        if nargin < 3, optitrackHost = '192.168.2.145'; end
-
-        % Check input arguments for errors TODO: Add error checks
-        % assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[1,1]),...
-        %     'bot.diffdrive:khepera:arg1',...
-        %     'Input argument "arg1" must be a 1 x 1 real number.')
+        if nargin < 1, simulate = true; end;
+        if nargin < 2, name = ''; end;
+        if nargin < 3, id = nan; end
+        if nargin < 4, optitrackHost = '192.168.2.145'; end
         
         % Initialize superclass
-        kheperaObj = kheperaObj@bot.diffdrive.diffdrive(varargin{:});
+        kheperaObj = kheperaObj@bot.diffdrive.diffdrive(simulate);
         
         % Assign properties
         kheperaObj.wheelRadius = 0.021; % [m]
@@ -82,7 +87,7 @@ methods
         kheperaObj.host = sprintf('192.168.1.2%02.0f',id);
         
         if ~isempty(name)
-            kheperaObj.trackable = trackable.trackable(name,optitrackHost);
+            kheperaObj.trackable = trackable.trackable(simulate,name,optitrackHost);
             kheperaObj.javaHandle = javaObject('matlab.simulator.k3.K3Driver', kheperaObj.host, int32(str2double(kheperaObj.port)));
         end
     end
@@ -112,42 +117,14 @@ end
 %-------------------------------------------------------------------------------
 
 %% Property Methods ------------------------------------------------------------
-% methods
-%     function kheperaObj = set.prop1(kheperaObj,prop1)
-%         % Overloaded assignment operator function for the "prop1" property.
-%         %
-%         % SYNTAX:
-%         %   kheperaObj.prop1 = prop1
-%         %
-%         % INPUT:
-%         %   prop1 - (1 x 1 real number)
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-%         assert(isnumeric(prop1) && isreal(prop1) && isequal(size(prop1),[1,1]),...
-%             'bot.diffdrive:khepera:set:prop1',...
-%             'Property "prop1" must be set to a 1 x 1 real number.')
-% 
-%         kheperaObj.prop1 = prop1;
-%     end
-%     
-%     function prop1 = get.prop1(kheperaObj)
-%         % Overloaded query operator function for the "prop1" property.
-%         %
-%         % SYNTAX:
-%         %	  prop1 = kheperaObj.prop1
-%         %
-%         % OUTPUT:
-%         %   prop1 - (1 x 1 real number)
-%         %
-%         % NOTES:
-%         %
-%         %-----------------------------------------------------------------------
-% 
-%         prop1 = kheperaObj.prop1;
-%     end
-% end
+methods
+    function set.id(kheperaObj,id)       
+        assert(isnan(id) || (isnumeric(id) && isreal(id) && isequal(size(id),[1,1]) && mod(id,1) == 0 && id > 0),...
+            'bot.diffdrive:set:khepera:id',...
+            'Input argument "id" must be a 1 x 1 positive integer.')
+        kheperaObj.id = id;
+    end
+end
 %-------------------------------------------------------------------------------
 
 %% General Methods -------------------------------------------------------------

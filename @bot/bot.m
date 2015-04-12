@@ -61,19 +61,20 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function botObj = bot(nInputs,nOutputs)
+    function botObj = bot(simulate,nInputs,nOutputs)
         % Constructor function for the "bot" class.
         %
         % SYNTAX:
-        %   botObj = bot()
-        %   botObj = bot(nInputs)
-        %   botObj = bot(nInputs,nOutputs)
+        %   botObj = bot(simulate,nInputs,nOutputs)
         %
         % INPUTS:
-        %   nInputs = (1 x 1 positive integer) [0]
+        %   simulate - (1 x 1 logical) [true]
+        %       Sets the "simulate" property.
+        %
+        %   nInputs - (1 x 1 positive integer) [0]
         %       Sets the "botObj.nInputs" property.
         %
-        %   nOutputs = (1 x 1 positive integer) [0]
+        %   nOutputs - (1 x 1 positive integer) [0]
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
@@ -85,11 +86,12 @@ methods
         %-----------------------------------------------------------------------
         
         % Check number of arguments
-        narginchk(0,2)
+        narginchk(0,3)
 
         % Apply default values
-        if nargin < 1, nInputs = 0; end
-        if nargin < 2, nOutputs = 0; end
+        if nargin < 1, simulate = true; end
+        if nargin < 2, nInputs = 0; end
+        if nargin < 3, nOutputs = 0; end
 
         % Check input arguments for errors
         assert(isnumeric(nInputs) && isreal(nInputs) && numel(nInputs) == 1 && ...
@@ -103,6 +105,7 @@ methods
             'Input argument "nOutputs" must be a 1 x 1 positive integer.')
         
         % Assign properties
+        botObj.simulate = simulate;
         botObj.nInputs = nInputs;
         botObj.nOutputs = nOutputs;
         botObj.ticID = tic;
@@ -132,6 +135,20 @@ methods
 
     function time = get.time(botObj)
         time = botObj.timeRaw - botObj.timeOffset;
+    end
+    
+    function set.name(botObj,name)
+        assert(ischar(name),...
+            'trackable:trackable:set:name',...
+            'Property "name" must be a string.')
+        botObj.name = name;
+    end
+    
+    function set.simulate(botObj,simulate)       
+        assert(islogical(simulate) && numel(simulate) == 1,...
+            'trackable:trackable:set:simulate',...
+            'Property "simulate" must be set to a 1 x 1 logical.')
+        botObj.simulate = simulate;
     end
 
 end

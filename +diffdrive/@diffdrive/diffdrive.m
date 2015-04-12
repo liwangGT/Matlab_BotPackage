@@ -34,14 +34,17 @@ end
 
 %% Constructor -----------------------------------------------------------------
 methods
-    function diffdriveObj = diffdrive(nOutputs)
+    function diffdriveObj = diffdrive(simulate,nOutputs)
         % Constructor function for the "diffdrive" class.
         %
         % SYNTAX:
-        %   diffdriveObj = bot.diffdrive(nOutputs)
+        %   diffdriveObj = bot.diffdrive(simulate,nOutputs)
         %
         % INPUTS:
-        %   nOutputs = (1 x 1 positive integer) [0]
+        %   simulate - (1 x 1 logical) [true]
+        %       Sets the "simulate" property.
+        %
+        %   nOutputs - (1 x 1 positive integer) [0]
         %       Sets the "botObj.nOutputs" property.
         %
         % OUTPUTS:
@@ -53,14 +56,15 @@ methods
         %-----------------------------------------------------------------------
         
         % Check number of arguments
-        narginchk(0,1)
+        narginchk(0,2)
 
         % Apply default values
-        if nargin < 1, nOutputs = 0; end
+        if nargin < 1, simulate = true; end
+        if nargin < 2, nOutputs = 0; end
         
         % Initialize superclass
         nInputs = 2;
-        diffdriveObj = diffdriveObj@bot.bot(nInputs,nOutputs);
+        diffdriveObj = diffdriveObj@bot.bot(simulate,nInputs,nOutputs);
         
         % Assign properties
     end
