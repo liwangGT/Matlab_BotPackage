@@ -153,8 +153,6 @@ methods (Access = public)
         %   time - (1 x 1 number)
         %       Current time.
         %
-        % NOTES:
-        %
         %-----------------------------------------------------------------------
         
         time = toc(botObj.ticID);
@@ -174,8 +172,6 @@ methods (Access = public)
         % OUTPUTS:
         %   state - (1 x 1 state)
         %       Current state estimate.
-        %
-        % NOTES:
         %
         %-----------------------------------------------------------------------
         
@@ -205,8 +201,6 @@ methods (Access = public)
         % OUTPUTS:
         %   input - (nInputs x 1 number)
         %       System input.
-        %
-        % NOTES:
         %
         %-----------------------------------------------------------------------
         
@@ -240,9 +234,6 @@ methods (Access = public)
         %   state - (1 x 1 state)
         %       New state at one time step forward.
         %
-        % NOTES:
-        %
-        %
         %-----------------------------------------------------------------------
         
         state = botObj.state;
@@ -257,10 +248,6 @@ methods (Access = public)
         % INPUTS:
         %   botObj - (1 x 1 bot.bot)
         %       An instance of the "bot.bot" class.
-        %
-        % OUTPUTS:
-        %
-        % NOTES:
         %
         %-----------------------------------------------------------------------
     end
@@ -279,10 +266,6 @@ methods (Access = public)
         %   axH - (1 x 1 hghandle object) [gca]
         %       Axis to add graphic to.
         %
-        % OUTPUTS:
-        %
-        % NOTES:
-        %
         %-----------------------------------------------------------------------
         if nargin < 2; axH = gca; end
         
@@ -291,44 +274,72 @@ methods (Access = public)
             'Input argument "axH" must be a axis handle.')
         
         botObj.transformHandle = hgtransform('Parent',axH);
-        [geometry,color] = bot.bot.defaultGraphic();
+        
+        [vertices,faces,colors] = botObj.defaultGraphic();
+        
+        assert(iscell(vertices),...
+            'bot:addGraphicToPlot:vertices',...
+            'Output argument "vertices" must be a cell array.')  
+        p = numel(vertices); % number of patches in graphic
+        
+        assert(iscell(faces) && numel(faces) == p,...
+            'bot:addGraphicToPlot:faces',...
+            'Output argument "faces" must be a %d length cell array.',p)
+        
+        assert(iscell(colors) && numel(colors) == p,...
+            'bot:addGraphicToPlot:colors',...
+            'Output argument "colors" must be a %d length cell array.',p)
         
         nextPlot = get(axH,'NextPlot');
-        set(axH,'NextPlot','add')
-        patch('Parent',botObj.transformHandle,...
-              'Vertices',geometry,...
-              'Faces',1:size(geometry,1),...
+        set(axH,'NextPlot','add');
+        for i = 1:p
+            patch('Parent',botObj.transformHandle,...
+              'Vertices',vertices{i},...
+              'Faces',faces{i},...
               'FaceColor','flat',...
-              'FaceVertexCData',color);
+              'FaceVertexCData',colors{i});
+        end
+
         set(botObj.transformHandle,'Matrix',botObj.state.transform);
         set(axH,'NextPlot',nextPlot);
     end
-end
-
-methods (Static)
-    function [geometry,color] = defaultGraphic()
+    
+    function [vertices,faces,colors] = defaultGraphic(~)
         % The "defaultGraphic" method returns the patch geometry and color
         % for the default bot graphic.
         %
         % SYNTAX:
-        %   [geometry,color] = bot.bot.defaultGraphic()
+        %   [vertices,faces,color] = botObj.defaultGraphic()
         %
         % INPUTS:
+        %   botObj - (1 x 1 bot.bot)
+        %       An instance of the "bot.bot" class.
         %
         % OUTPUTS:
+        %   vertices - (p x 1 cell array of n x 3 numbers)
+        %      Patch vertices, where "n" is the total number unique
+        %      vertices. One set per cell.
         %
-        % NOTES:
+        %   faces - (p x 1 cell array of m x v numbers)
+        %       Patch faces, where "m" is the number of faces and "v" is
+        %       the number of vertices per face. One set per cell.
+        %
+        %   colors - (p x 1 cell array of 1 x 3 number)
+        %       Face color. One set per cell.
+        %
+        % SEE ALSO:
+        %    patch
         %
         %-----------------------------------------------------------------------
         n = 15;
         t = linspace(atan(5/2.5),2*pi-atan(5/2.5),n)';
         curve = 2.5*[cos(t),sin(t),zeros(n,1)];
-        geometry = [   5,   0,   0;...
-            curve];
-        geometry = 1/20*geometry;
-        color = [.8 .8 .8];
+        vertices = {1/20*[   5,   0,   0; curve]};
+        faces = {1:size(vertices{1},1)};
+        colors = {[.8 .8 .8]};
     end
 end
+
 %-------------------------------------------------------------------------------
 
 %% Methods in separte files ----------------------------------------------------

@@ -114,6 +114,37 @@ methods (Access = public)
         
     end
     
+    function [vertices,faces,colors] = defaultGraphic(~)
+        % See parent class for description.
+        %
+        %-----------------------------------------------------------------------
+        
+        % Body
+        n = 32;
+        t = linspace(0,2*pi*(1-1/n),n)';
+        vertices{1} = .1*[cos(t),sin(t),zeros(n,1)];
+        faces{1} = 1:n;
+        colors{1} = [.8 .8 .8];
+        
+        % Wheels
+        vertices{2} = [.1 .11 0;...
+                       .1 .13 0;...
+                       -.1 .13 0;...
+                       -.1 .11 0;...
+                       .1 -.11 0;...
+                       .1 -.13 0;...
+                       -.1 -.13 0;...
+                       -.1 -.11 0];
+        faces{2} = [1:4;5:8];
+        colors{2} = [0 0 0];
+        
+        % Nose
+        vertices{3} = [.11 -.05;...
+                      .11  .05;...
+                      .15  0];
+        faces{3} = 1:3;
+        colors{3} = [0 0 0];
+    end
 end
 %-------------------------------------------------------------------------------
 
