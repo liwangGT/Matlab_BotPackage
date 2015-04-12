@@ -269,56 +269,69 @@ methods (Access = public)
         %-----------------------------------------------------------------------
     end
     
-    function addGraphicToPlot(botObj,axH)
+    function addGraphicToPlot(botObj,axH,hgH)
         % The "addGraphicToPlot" method adds the botObj's graphic to the
         % given plot.
         %
         % SYNTAX:
-        %   botObj.addGraphicToPlot(axH)
+        %   botObj.addGraphicToPlot(axH,hgH)
         %
         % INPUTS:
         %   botObj - (1 x 1 bot.bot)
         %       An instance of the "bot.bot" class.
         %
-        %   axH - (1 x 1 hghandle object) [gca]
+        %   axH - (1 x 1 hghandle) [gca]
         %       Axis to add graphic to.
+        %
+        %   hgH - (1 x 1 hghandle) [[]]
+        %       HGHandle graphic to used instead of the default graphic. If
+        %       empty the default graphic is used.
         %
         %-----------------------------------------------------------------------
         if nargin < 2; axH = gca; end
+        if nargin < 3; hgH = []; end
         
-        assert(ishghandle(axH),...
+        assert(ishghandle(axH) && strcmp(get(axH,'Type'),'axes'),...
             'bot:addGraphicToPlot:axH',...
             'Input argument "axH" must be a axis handle.')
         
+        assert(isempty(hgH) || ishghandle(hgH),...
+            'bot:addGraphicToPlot:axH',...
+            'Input argument "axH" must be a hg handle or empty.')
+        
         botObj.transformHandle = hgtransform('Parent',axH);
         
-        [vertices,faces,colors] = botObj.defaultGraphic();
-        
-        assert(iscell(vertices),...
-            'bot:addGraphicToPlot:vertices',...
-            'Output argument "vertices" must be a cell array.')  
-        p = numel(vertices); % number of patches in graphic
-        
-        assert(iscell(faces) && numel(faces) == p,...
-            'bot:addGraphicToPlot:faces',...
-            'Output argument "faces" must be a %d length cell array.',p)
-        
-        assert(iscell(colors) && numel(colors) == p,...
-            'bot:addGraphicToPlot:colors',...
-            'Output argument "colors" must be a %d length cell array.',p)
-        
-        nextPlot = get(axH,'NextPlot');
-        set(axH,'NextPlot','add');
-        for i = 1:p
-            patch('Parent',botObj.transformHandle,...
-              'Vertices',vertices{i},...
-              'Faces',faces{i},...
-              'FaceColor','flat',...
-              'FaceVertexCData',colors{i});
+        if isempty(hgH)
+            [vertices,faces,colors] = botObj.defaultGraphic();
+            
+            assert(iscell(vertices),...
+                'bot:addGraphicToPlot:vertices',...
+                'Output argument "vertices" must be a cell array.')
+            p = numel(vertices); % number of patches in graphic
+            
+            assert(iscell(faces) && numel(faces) == p,...
+                'bot:addGraphicToPlot:faces',...
+                'Output argument "faces" must be a %d length cell array.',p)
+            
+            assert(iscell(colors) && numel(colors) == p,...
+                'bot:addGraphicToPlot:colors',...
+                'Output argument "colors" must be a %d length cell array.',p)
+            
+            nextPlot = get(axH,'NextPlot');
+            set(axH,'NextPlot','add');
+            for i = 1:p
+                patch('Parent',botObj.transformHandle,...
+                    'Vertices',vertices{i},...
+                    'Faces',faces{i},...
+                    'FaceColor','flat',...
+                    'FaceVertexCData',colors{i});
+            end
+            
+            set(botObj.transformHandle,'Matrix',botObj.state.transform);
+            set(axH,'NextPlot',nextPlot);
+        else
+            set(hgH,'Parent',botObj.transformHandle);
         end
-
-        set(botObj.transformHandle,'Matrix',botObj.state.transform);
-        set(axH,'NextPlot',nextPlot);
     end
     
     function [vertices,faces,colors] = defaultGraphic(~)
