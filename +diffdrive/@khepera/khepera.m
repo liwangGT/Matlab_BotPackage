@@ -2,14 +2,14 @@ classdef khepera < bot.diffdrive.diffdrive
 % The "bot.diffdrive.khepera" class is for the Khephera robot.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.diffdrive.khepera" into the
-%   command window.
+%   To get more information on this class type "doc bot.diffdrive.khepera"
+%   into the command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   @diffdrive, @bot.diffdrive, @quaternion
+%   @diffdrive, @quaternion
 %
-% SEE ALSO: TODO: Add see alsos
-%    relatedFunction1 | relatedFunction2
+% SEE ALSO:
+%    bot.quad.dji350 | relatedFunction2
 %
 % AUTHOR:
 %    Rowland O'Flaherty (www.rowlandoflaherty.com)
@@ -22,7 +22,7 @@ classdef khepera < bot.diffdrive.diffdrive
 properties (Access = public)
     id
     host
-    port = '4555'
+    port = 4555
     trackable = []
     kheperaInitialized = false
     trackableInitialized = false
@@ -34,7 +34,7 @@ end
 
 % Constructor ------------------------------------------------------------------
 methods
-    function kheperaObj = khepera(simulate,name,id,optitrackHost,varargin)
+    function kheperaObj = khepera(simulate,name,id,optitrackHost)
         % Constructor function for the "khepera" class.
         %
         % SYNTAX:
@@ -64,14 +64,23 @@ methods
         %
         %-----------------------------------------------------------------------
 
+        % Check number of arguments
+        narginchk(0,4)
+        
         % Apply default values
         if nargin < 1, simulate = true; end;
         if nargin < 2, name = ''; end;
         if nargin < 3, id = nan; end
         if nargin < 4, optitrackHost = '192.168.2.145'; end
         
+        % Check input arguments for errors TODO: Add error checks
+        % assert(isnumeric(arg1) && isreal(arg1) && isequal(size(arg1),[1,1]),...
+        %     'bot:diffdrive:khepera:arg1',...
+        %     'Input argument "arg1" must be a 1 x 1 real number.')
+
+        
         % Initialize superclass
-        kheperaObj = kheperaObj@bot.diffdrive.diffdrive(simulate);
+        kheperaObj = kheperaObj@bot.diffdrive.diffdrive(simulate,0);
         
         % Assign properties
         kheperaObj.wheelRadius = 0.021; % [m]
@@ -88,7 +97,7 @@ methods
         
         if ~isempty(name)
             kheperaObj.trackable = trackable.trackable(simulate,name,optitrackHost);
-            kheperaObj.javaHandle = javaObject('matlab.simulator.k3.K3Driver', kheperaObj.host, int32(str2double(kheperaObj.port)));
+            kheperaObj.javaHandle = javaObject('matlab.simulator.k3.K3Driver', kheperaObj.host, int32(kheperaObj.port));
         end
     end
 end

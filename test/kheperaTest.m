@@ -29,7 +29,7 @@ name = 'K13';
 id = 13;
 
 %% Initialize robot
-KK = Khepera(name,id);
+KK = khepera(name,id);
 KK.simulate = false;
 KK.record = true;
 KK.init()

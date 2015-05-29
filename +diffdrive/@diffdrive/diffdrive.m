@@ -1,15 +1,14 @@
 classdef diffdrive < bot.bot
-% The "bot.diffdrive.diffdrive" classis for differential drive robots.
+% The "bot.diffdrive.diffdrive" class is for differential drive robots.
 %
 % NOTES:
-%   To get more information on this class type "doc bot.diffdrive" into the
+%   To get more information on this class type "doc bot.diffdrive.diffdrive" into the
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   +bot
 %
-% SEE ALSO: TODO: Add see alsos
-%    bot.bot | relatedFunction2
+% SEE ALSO:
+%    bot.bot | bot.quad.quad
 %
 % AUTHOR:
 %    Rowland O'Flaherty (www.rowlandoflaherty.com)
@@ -23,9 +22,9 @@ properties (Access = public)
     wheelRadius = 0.01 % (1 x 1 positive number) [meters] Radius of robot wheel.
     wheelBase = 0.1 % (1 x 1 positive number) [meters] Wheel base length of robot.
     speedFactor = 1; % (1 x 1 number) Conversion factor between wheel angular velocities and motor speeds
-    d = .1;
-    Q = diag([10 10]);
-    R = diag([1 10]);
+    d = .1; % (1 x 1 positive number) Diffeomorphic distance from center of robot.
+    Q = diag([10 10]); % (2 x 2 semi-postive def matrix) Q matrix for LQR controller weight.
+    R = diag([1 10]); % (2 x 2 postive def matrix) R matrix for LQR controller weight.
 end
 
 properties (GetAccess = public, SetAccess = public)    
@@ -38,7 +37,7 @@ methods
         % Constructor function for the "diffdrive" class.
         %
         % SYNTAX:
-        %   diffdriveObj = bot.diffdrive(simulate,nOutputs)
+        %   diffdriveObj = bot.diffdrive.diffdrive(simulate,nOutputs)
         %
         % INPUTS:
         %   simulate - (1 x 1 logical) [true]
@@ -91,7 +90,7 @@ end
 methods (Access = public)
     function goto(diffdriveObj,desiredPoint,ballSize)
         % The "goto" method drives the robot to the "desiredPoint" and stops
-        % when the robot is "ballSize" of the point.
+        % when the robot is within a distance of "ballSize" of the point.
         %
         % SYNTAX:
         %   time = diffdriveObj.clock()
