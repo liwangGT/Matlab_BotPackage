@@ -47,7 +47,7 @@ KK.desiredState.y = 1;
 %% Initialize figure
 figH = figure(1);
 clf(figH);
-set(1,'Position',figPos('top','full'));
+set(1,'Position',getFigPos('top','full'));
 axH = axes;
 grid(axH,'on')
 xlim(axH,[-8.5 8.5])

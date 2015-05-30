@@ -88,35 +88,6 @@ end
 
 %% General Methods -------------------------------------------------------------
 methods (Access = public)
-    function goto(diffdriveObj,desiredPoint,ballSize)
-        % The "goto" method drives the robot to the "desiredPoint" and stops
-        % when the robot is within a distance of "ballSize" of the point.
-        %
-        % SYNTAX:
-        %   time = diffdriveObj.clock()
-        %
-        % INPUTS:
-        %   diffdriveObj - (1 x 1 bot.diffdrive.diffdrive)
-        %       An instance of the "bot.diffdrive.diffdrive" class.
-        %
-        %   desiredPoint - (2 x 1 number)
-        %       Desired point to goto.
-        %
-        %   ballSize - (2 x 1 number)
-        %       Ball size of goal point.
-        %
-        % NOTES:
-        %
-        %-----------------------------------------------------------------------
-        diffdriveObj.state = diffdriveObj.estimator();
-        diffdriveObj.desiredState.position(1:2) = desiredPoint;
-        
-        while norm(diffdriveObj.desiredState.position(1:2) - diffdriveObj.state.position(1:2)) > ballSize
-            diffdriveObj.update()
-        end
-        
-    end
-    
     function [vertices,faces,colors] = defaultGraphic(~)
         % See parent class for description.
         %

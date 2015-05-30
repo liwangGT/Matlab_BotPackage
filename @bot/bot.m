@@ -269,6 +269,34 @@ methods (Access = public)
         %-----------------------------------------------------------------------
     end
     
+    function goto(botObj,desiredPoint,ballSize)
+        % The "goto" method drives the robot to the "desiredPoint" and stops
+        % when the robot is within a distance of "ballSize" of the point.
+        %
+        % SYNTAX:
+        %   time = botObj.clock()
+        %
+        % INPUTS:
+        %   botObj - (1 x 1 bot.diffdrive.diffdrive)
+        %       An instance of the "bot.diffdrive.diffdrive" class.
+        %
+        %   desiredPoint - (3 x 1 number)
+        %       Desired point to goto.
+        %
+        %   ballSize - (1 x 1 number)
+        %       Ball size of goal point.
+        %
+        % NOTES:
+        %
+        %-----------------------------------------------------------------------
+        botObj.desiredState.position = desiredPoint;
+        
+        while norm(botObj.desiredState.position - botObj.state.position) > ballSize
+            botObj.update()
+        end
+        
+    end
+    
     function addGraphicToPlot(botObj,axH,hgH)
         % The "addGraphicToPlot" method adds the botObj's graphic to the
         % given plot.

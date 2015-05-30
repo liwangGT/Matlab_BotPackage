@@ -44,6 +44,10 @@ botObj.state = state;
 
 if ~isempty(botObj.transformHandle) && ishghandle(botObj.transformHandle) && ishghandle(get(botObj.transformHandle,'Parent'))
     set(botObj.transformHandle,'Matrix',botObj.state.transform);
+          
+    if botObj.simulate
+        drawnow
+    end
 end
 
 

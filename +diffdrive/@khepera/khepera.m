@@ -6,7 +6,7 @@ classdef khepera < bot.diffdrive.diffdrive
 %   into the command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   @diffdrive, @quaternion
+%   @diffdrive, @quaternion, +trackable
 %
 % SEE ALSO:
 %    bot.quad.dji350 | relatedFunction2
