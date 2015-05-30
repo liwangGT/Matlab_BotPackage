@@ -20,6 +20,9 @@ classdef quad < bot.bot
 %% Properties ------------------------------------------------------------------
 properties (Access = public)
     armLength = 0.125 % (1 x 1 positive number) [meters] Length of arm from quad center to motor center.
+    mass = 1.2 % (1 x 1 positive number) [kilograms] Mass of quad.
+    Q = eye(6); % (6 x 6 semi-postive def matrix) Q matrix for LQR controller weight.
+    R = eye(3); % (3 x 3 postive def matrix) R matrix for LQR controller weight.
 end
 % 
 % properties (Access = private)
@@ -61,7 +64,7 @@ methods
         if nargin < 2, nOutputs = 0; end
         
         % Initialize superclass
-        nInputs = 4;
+        nInputs = 3;
         quadObj = quadObj@bot.bot(simulate,nInputs,nOutputs);
         
         % Assign properties
@@ -148,9 +151,10 @@ end
 %-------------------------------------------------------------------------------
 
 %% Methods in separte files ----------------------------------------------------
-% methods (Access = public)
-%     quadObj = someMethod(quadObj,arg1)
-% end
+methods (Access = public)
+    state = step(quadObj,timeStep,time,state,input)
+    input = controller(quadObj,time,state,desiredState)
+end
 %-------------------------------------------------------------------------------
     
 end

@@ -6,7 +6,7 @@ classdef dji350 < bot.quad.quad
 %   command window.
 %
 % NECESSARY FILES AND/OR PACKAGES:
-%   @quad, @quaternion
+%   @quad, @quaternion, +trackable
 %
 % SEE ALSO:
 %    bot.quad.dji350
