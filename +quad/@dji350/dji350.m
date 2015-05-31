@@ -22,7 +22,7 @@ classdef dji350 < bot.quad.quad
 properties (Access = public)
     id
     host
-    port = 4655
+    port = 21234
     trackable = []
     quadInitialized = false
     trackableInitialized = false
@@ -204,9 +204,9 @@ methods (Access = public)
                     fopen(dji350Obj.udpObj);
                     dji350Obj.quadInitialized = true;
                 catch err %#ok<NASGU>
-                    dji350Obj.kheperaInitialized = false;
+                    dji350Obj.quadInitialized = false;
                 end
-                result = dji350Obj.kheperaInitialized;
+                result = dji350Obj.quadInitialized;
             end
             if trackableFlag
                 dji350Obj.trackableInitialized = dji350Obj.trackable.init();
@@ -219,7 +219,7 @@ methods (Access = public)
         
     end
     
-    function send(dji350Obj,input)
+    function send(dji350Obj,~)
         % The "send" method sends data to the robot.
         %
         % SYNTAX:
@@ -238,8 +238,13 @@ methods (Access = public)
         % NOTES:
         %
         %-----------------------------------------------------------------------
-        if nargin < 2; input = dji350Obj.input; end;
         
+        pos = dji350Obj.desiredState.position;
+        yaw = dji350Obj.state.yaw;
+        
+        msg = ['$',num2str([pos;yaw]','%+2.3f,'),'*'];
+        
+        fwrite(dji350Obj.udpObj,msg);        
     end
     
     function data = receive(dji350Obj)
